@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     semi: "warn",
     "no-unused-vars": "warn",
+    "jsx-a11y/no-autofocus": "off",
     "import/no-extraneous-dependencies": "off",
     "react/prop-types": "off",
     "react/button-has-type": "off",
@@ -30,4 +31,4 @@ module.exports = {
     "no-param-reassign": 0,
     "no-underscore-dangle": "off",
   },
-}
+};
