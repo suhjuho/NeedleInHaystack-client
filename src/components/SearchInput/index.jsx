@@ -37,7 +37,7 @@ function SearchInput() {
           ref={inputRef}
           autoFocus
         />
-        {query ? (
+        {query && (
           <button
             className="text-left"
             type="button"
@@ -49,7 +49,7 @@ function SearchInput() {
             <p className="pl-2 hover:bg-slate-300">자동완성 추천 4</p>
             <p className="pl-2 hover:bg-slate-300">자동완성 추천 5</p>
           </button>
-        ) : null}
+        )}
       </form>
     </>
   );
