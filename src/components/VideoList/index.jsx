@@ -11,7 +11,6 @@ function VideoList({ youtubeVideId }) {
         `${import.meta.env.VITE_BASE_URL}/videos/${youtubeVideId}`,
       );
 
-      console.log(response.data);
       if (response.data.result === "ok") {
         setVideo(response.data.video);
       }
