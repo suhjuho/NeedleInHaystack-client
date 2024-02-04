@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SearchInput() {
+  const navigate = useNavigate();
+
   const [query, setQuery] = useState("");
   const inputRef = useRef(null);
 
@@ -10,6 +13,9 @@ function SearchInput() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    const keywords = query.replace(/\s+/g, " ").split(" ").join("+");
+
+    navigate(`/results?search_query=${keywords}`);
   }
 
   function handleAutoCompletionClick(event) {
