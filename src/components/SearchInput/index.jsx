@@ -14,13 +14,14 @@ function SearchInput() {
 
   useEffect(() => {
     async function getAutoCompletions(userInput) {
-      const baseURL = "http://localhost:3000";
-
       try {
-        const response = await axios.get(`${baseURL  }/auto-completions`, {
-          params: { userInput },
-        });
-        const {data} = response;
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/auto-completions`,
+          {
+            params: { userInput },
+          },
+        );
+        const { data } = response;
 
         setAutoCompletions(data);
       } catch (error) {
@@ -32,28 +33,24 @@ function SearchInput() {
   }, [userInput]);
 
   function handleArrowKeyPress(event) {
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") {
+      return;
+    }
 
+    event.preventDefault();
+
+    if (event.key === "ArrowDown") {
       setSelectedItemIndex((prevIndex) =>
         prevIndex < autoCompletions.length - 1 ? prevIndex + 1 : 0,
       );
     } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-
       setSelectedItemIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : autoCompletions.length - 1,
       );
     }
   }
 
-  function handleMouseEnter(event) {
-    const index = Number(event.target.getAttribute("index"));
-
-    setSelectedItemIndex(index);
-  }
-
-  function handleMouseLeave(event) {
+  function handleMouseHover(event) {
     const index = Number(event.target.getAttribute("index"));
 
     setSelectedItemIndex(index);
@@ -96,8 +93,8 @@ function SearchInput() {
                 key={element}
                 index={index}
                 className={`pl-2 ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                onMouseEnter={handleMouseHover}
+                onMouseLeave={handleMouseHover}
               >
                 {element}
               </p>
