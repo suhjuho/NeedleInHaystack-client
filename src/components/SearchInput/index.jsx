@@ -1,19 +1,66 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import axios from "axios";
+import useUserInputStore from "../../store/store";
 
 function SearchInput() {
-  const [query, setQuery] = useState("");
+  const { userInput, setUserInput } = useUserInputStore();
+  const [autoCompletions, setAutoCompletions] = useState([]);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const inputRef = useRef(null);
 
-  function handleQueryChange(event) {
-    setQuery(event.target.value);
+  function handleUserInputChange(event) {
+    setUserInput(event.target.value);
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  useEffect(() => {
+    async function getAutoCompletions(userInput) {
+      const baseURL = "http://localhost:3000";
+
+      try {
+        const response = await axios.get(`${baseURL  }/auto-completions`, {
+          params: { userInput },
+        });
+        const {data} = response;
+
+        setAutoCompletions(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getAutoCompletions(userInput);
+  }, [userInput]);
+
+  function handleArrowKeyPress(event) {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+
+      setSelectedItemIndex((prevIndex) =>
+        prevIndex < autoCompletions.length - 1 ? prevIndex + 1 : 0,
+      );
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+
+      setSelectedItemIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : autoCompletions.length - 1,
+      );
+    }
+  }
+
+  function handleMouseEnter(event) {
+    const index = Number(event.target.getAttribute("index"));
+
+    setSelectedItemIndex(index);
+  }
+
+  function handleMouseLeave(event) {
+    const index = Number(event.target.getAttribute("index"));
+
+    setSelectedItemIndex(index);
   }
 
   function handleAutoCompletionClick(event) {
-    setQuery(event.target.textContent);
+    setUserInput(event.target.textContent);
 
     inputRef.current.disabled = false;
     inputRef.current.focus();
@@ -26,28 +73,35 @@ function SearchInput() {
       </p>
       <form
         className="flex flex-col w-96 mt-4 border-2 rounded-lg border-red-500"
-        onSubmit={handleSubmit}
+        onSubmit={(event) => event.preventDefault()}
       >
         <input
           className="pl-2 rounded-md border-red-500 outline-none"
           type="text"
           placeholder="Haystack 검색"
-          value={query}
-          onChange={handleQueryChange}
+          value={userInput}
+          onChange={handleUserInputChange}
+          onKeyDown={handleArrowKeyPress}
           ref={inputRef}
           autoFocus
         />
-        {query && (
+        {userInput && (
           <button
             className="text-left"
             type="button"
             onClick={handleAutoCompletionClick}
           >
-            <p className="pl-2 hover:bg-slate-300">자동완성 추천 1</p>
-            <p className="pl-2 hover:bg-slate-300">자동완성 추천 2</p>
-            <p className="pl-2 hover:bg-slate-300">자동완성 추천 3</p>
-            <p className="pl-2 hover:bg-slate-300">자동완성 추천 4</p>
-            <p className="pl-2 hover:bg-slate-300">자동완성 추천 5</p>
+            {autoCompletions.map((element, index) => (
+              <p
+                key={element}
+                index={index}
+                className={`pl-2 ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {element}
+              </p>
+            ))}
           </button>
         )}
       </form>

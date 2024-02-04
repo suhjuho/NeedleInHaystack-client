@@ -1,11 +1,7 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
-  extends: [
-    "airbnb",
-    "plugin:react/recommended",
-    "prettier"
-  ],
+  extends: ["airbnb", "plugin:react/recommended", "prettier"],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parserOptions: {
     ecmaFeatures: {
@@ -30,5 +26,7 @@ module.exports = {
     "react/jsx-filename-extension": ["warn", { extensions: [".js", ".jsx"] }],
     "no-param-reassign": 0,
     "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "react/no-unknown-property": ["error", { ignore: ["index"] }],
   },
 };
