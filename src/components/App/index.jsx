@@ -8,7 +8,7 @@ function App() {
     <Routes>
       <Route path="/" exact element={<MainPage />} />
       <Route path="/results" element={<ResultPage />} />
-      <Route path="*" element={<ErrorPage />} />
+      <Route path="*" element={<ErrorPage errorMessage="404 Not Found!" />} />
     </Routes>
   );
 }
