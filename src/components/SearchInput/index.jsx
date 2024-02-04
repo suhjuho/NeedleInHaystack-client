@@ -4,12 +4,11 @@ import axios from "axios";
 import { useUserInputStore } from "../../store/store";
 
 function SearchInput() {
-  const navigate = useNavigate();
-
   const { userInput, setUserInput } = useUserInputStore();
   const [autoCompletions, setAutoCompletions] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   function handleUserInputChange(event) {
     setUserInput(event.target.value);
@@ -36,20 +35,28 @@ function SearchInput() {
   }, [userInput]);
 
   function handleArrowKeyPress(event) {
-    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") {
+    const pressedKey = event.key;
+
+    if (
+      pressedKey !== "ArrowUp" &&
+      pressedKey !== "ArrowDown" &&
+      pressedKey !== "Escape"
+    ) {
       return;
     }
 
     event.preventDefault();
 
-    if (event.key === "ArrowDown") {
+    if (pressedKey === "ArrowDown") {
       setSelectedItemIndex((prevIndex) =>
         prevIndex < autoCompletions.length - 1 ? prevIndex + 1 : 0,
       );
-    } else if (event.key === "ArrowUp") {
+    } else if (pressedKey === "ArrowUp") {
       setSelectedItemIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : autoCompletions.length - 1,
       );
+    } else if (pressedKey === "Escape") {
+      setAutoCompletions(() => []);
     }
   }
 
@@ -93,23 +100,25 @@ function SearchInput() {
           autoFocus
         />
         {userInput && (
-          <button
-            className="text-left"
-            type="button"
-            onClick={handleAutoCompletionClick}
-          >
-            {autoCompletions.map((element, index) => (
-              <p
-                key={element}
-                index={index}
-                className={`pl-2 ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
-                onMouseEnter={handleMouseHover}
-                onMouseLeave={handleMouseHover}
-              >
-                {element}
-              </p>
-            ))}
-          </button>
+          <div>
+            <button
+              className={`text-left absolute w-96 rounded-md ${autoCompletions.length ? "border-red-500  bg-white border-2" : ""} mt-1`}
+              type="button"
+              onClick={handleAutoCompletionClick}
+            >
+              {autoCompletions.map((element, index) => (
+                <p
+                  key={element}
+                  index={index}
+                  className={`pl-2 ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
+                  onMouseEnter={handleMouseHover}
+                  onMouseLeave={handleMouseHover}
+                >
+                  {element}
+                </p>
+              ))}
+            </button>
+          </div>
         )}
       </form>
     </>
