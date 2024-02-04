@@ -53,10 +53,21 @@ function ResultPage() {
     <div className="flex flex-col items-center mt-10">
       <Header />
       <SearchInput />
-      {videos.map((video) => {
-        const youtubeVideId = video[0];
-        return <VideoList key={youtubeVideId} youtubeVideId={youtubeVideId} />;
-      })}
+      {videos.length !== 0 ? (
+        videos.map((video) => {
+          const youtubeVideId = video[0];
+          return (
+            <VideoList key={youtubeVideId} youtubeVideId={youtubeVideId} />
+          );
+        })
+      ) : (
+        <div className="mt-10 text-center font-bold">
+          <div className="text-xl">No results found</div>
+          <p className="mt-4">
+            Try different keywords or remove search filters
+          </p>
+        </div>
+      )}
     </div>
   );
 }
