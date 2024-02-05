@@ -55,9 +55,9 @@ function ResultPage() {
       <SearchInput />
       {videos.length !== 0 ? (
         videos.map((video) => {
-          const youtubeVideId = video[0];
+          const youtubeVideoId = video[0];
           return (
-            <VideoList key={youtubeVideId} youtubeVideId={youtubeVideId} />
+            <VideoList key={youtubeVideoId} youtubeVideId={youtubeVideoId} />
           );
         })
       ) : (
