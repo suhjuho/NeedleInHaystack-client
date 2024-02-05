@@ -28,5 +28,8 @@ module.exports = {
     "no-underscore-dangle": "off",
     "no-shadow": "off",
     "react/no-unknown-property": ["error", { ignore: ["index"] }],
+    "consistent-return": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
   },
 };
