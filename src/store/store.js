@@ -5,11 +5,4 @@ const useUserInputStore = create((set) => ({
   setUserInput: (userInput) => set({ userInput }),
 }));
 
-const useVideoStore = create((set) => ({
-  videos: [],
-  setVideos: (data) => set((state) => ({ videos: data })),
-  insertVideos: (data) =>
-    set((state) => ({ videos: state.videos.concat(data) })),
-}));
-
-export { useUserInputStore, useVideoStore };
+export default useUserInputStore;

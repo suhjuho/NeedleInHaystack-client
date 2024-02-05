@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useUserInputStore } from "../../store/store";
+import useUserInputStore from "../../store/store";
 
 function SearchInput() {
   const { userInput, setUserInput } = useUserInputStore();
