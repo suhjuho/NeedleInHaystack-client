@@ -20,7 +20,7 @@ function VideoList({ youtubeVideoId }) {
   }, []);
 
   return (
-    <Link state={{ video }} to={`/watch?${video.youtubeVideoId}`}>
+    <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
       <div className="flex w-screen mb-2">
         <img
           className="w-[300px] mr-2"
