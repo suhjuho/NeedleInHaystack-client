@@ -3,7 +3,7 @@ import Header from "../Header";
 import Video from "../Video";
 import VideoScript from "../VideoScript";
 
-function DetailPage() {
+function VideoDetailPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -27,4 +27,4 @@ function DetailPage() {
   );
 }
 
-export default DetailPage;
+export default VideoDetailPage;
