@@ -57,7 +57,7 @@ function ResultPage() {
         videos.map((video) => {
           const youtubeVideoId = video[0];
           return (
-            <VideoList key={youtubeVideoId} youtubeVideId={youtubeVideoId} />
+            <VideoList key={youtubeVideoId} youtubeVideoId={youtubeVideoId} />
           );
         })
       ) : (

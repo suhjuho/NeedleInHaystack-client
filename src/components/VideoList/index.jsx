@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function VideoList({ youtubeVideId }) {
+function VideoList({ youtubeVideoId }) {
   const [video, setVideo] = useState({});
 
   useEffect(() => {
     async function fetchVideo() {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/videos/${youtubeVideId}`,
+        `${import.meta.env.VITE_BASE_URL}/videos/${youtubeVideoId}`,
       );
 
       if (response.data.result === "ok") {
@@ -20,7 +20,7 @@ function VideoList({ youtubeVideId }) {
   }, []);
 
   return (
-    <Link to={`/watch?${video.youtubeVideoId}`}>
+    <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
       <div className="flex w-screen mb-2">
         <img
           className="w-[300px] mr-2"
