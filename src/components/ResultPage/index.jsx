@@ -9,7 +9,7 @@ import SearchInput from "../SearchInput";
 import VideoList from "../VideoList";
 import Loading from "../shared/Loading";
 
-const SCROLL_WAIT_TIME = 300;
+import CONSTANT from "../../constants/constant";
 
 function ResultPage() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function ResultPage() {
     queryFn: ({ pageParam }) => fetchSearchResults(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    staleTime: 1000 * 60 * 5,
+    staleTime: CONSTANT.FIVE_MINUTE_IN_MILLISECONDS,
   });
 
   const handleScrollThrottle = throttle(() => {
@@ -51,7 +51,7 @@ function ResultPage() {
     ) {
       fetchNextPage();
     }
-  }, SCROLL_WAIT_TIME);
+  }, CONSTANT.SCROLL_WAIT_TIME);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScrollThrottle);
