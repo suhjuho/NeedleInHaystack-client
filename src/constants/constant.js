@@ -1,0 +1,6 @@
+const CONSTANT = {
+  SCROLL_WAIT_TIME: 300,
+  FIVE_MINUTE_IN_MILLISECONDS: 5 * 60 * 1000,
+};
+
+export default CONSTANT;
