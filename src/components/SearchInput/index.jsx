@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useUserInputStore from "../../store/store";
@@ -7,12 +7,10 @@ function SearchInput() {
   const { userInput, setUserInput } = useUserInputStore();
   const [autoCompletions, setAutoCompletions] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
-  const inputRef = useRef(null);
-  const navigate = useNavigate();
+  const [showAutoCompletions, setShowAutoCompletions] = useState(false);
 
-  function handleUserInputChange(event) {
-    setUserInput(event.target.value);
-  }
+  const navigate = useNavigate();
+  const arrowKeyPressed = useRef(false);
 
   useEffect(() => {
     async function getAutoCompletions(userInput) {
@@ -31,32 +29,65 @@ function SearchInput() {
       }
     }
 
-    getAutoCompletions(userInput);
-  }, [userInput]);
+    if (!arrowKeyPressed.current) {
+      getAutoCompletions(userInput);
+    }
+  }, [userInput, arrowKeyPressed]);
 
-  function handleArrowKeyPress(event) {
+  function handleUserInputChange(event) {
+    event.preventDefault();
+
+    arrowKeyPressed.current = false;
+
+    setUserInput(event.target.value);
+    setShowAutoCompletions(true);
+    setSelectedItemIndex(-1);
+  }
+
+  function handleKeyPress(event) {
     const pressedKey = event.key;
 
-    if (
-      pressedKey !== "ArrowUp" &&
-      pressedKey !== "ArrowDown" &&
-      pressedKey !== "Escape"
-    ) {
-      return;
+    if (pressedKey === "ArrowDown" || pressedKey === "ArrowUp") {
+      arrowKeyPressed.current = true;
+      event.preventDefault();
+      if (!showAutoCompletions) {
+        return setShowAutoCompletions(true);
+      }
     }
-
-    event.preventDefault();
 
     if (pressedKey === "ArrowDown") {
       setSelectedItemIndex((prevIndex) =>
         prevIndex < autoCompletions.length - 1 ? prevIndex + 1 : 0,
       );
+
+      const index =
+        selectedItemIndex < autoCompletions.length - 1
+          ? selectedItemIndex + 1
+          : 0;
+
+      setUserInput(autoCompletions[index]);
     } else if (pressedKey === "ArrowUp") {
+      setShowAutoCompletions(true);
       setSelectedItemIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : autoCompletions.length - 1,
       );
+
+      const index =
+        selectedItemIndex > 0
+          ? selectedItemIndex - 1
+          : autoCompletions.length - 1;
+
+      setUserInput(autoCompletions[index]);
     } else if (pressedKey === "Escape") {
-      setAutoCompletions(() => []);
+      setShowAutoCompletions(false);
+      setSelectedItemIndex(-1);
+    } else if (pressedKey === "Enter") {
+      const keywords = userInput.replace(/\s+/g, " ").split(" ").join("+");
+
+      setShowAutoCompletions(false);
+      setSelectedItemIndex(-1);
+
+      navigate(`/results?search_query=${keywords}`);
     }
   }
 
@@ -67,15 +98,11 @@ function SearchInput() {
   }
 
   function handleAutoCompletionClick(event) {
+    const selectedKeyword = autoCompletions[selectedItemIndex];
+    const keywords = selectedKeyword.replace(/\s+/g, " ").split(" ").join("+");
+
     setUserInput(event.target.textContent);
-
-    inputRef.current.disabled = false;
-    inputRef.current.focus();
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const keywords = userInput.replace(/\s+/g, " ").split(" ").join("+");
+    setShowAutoCompletions(false);
 
     navigate(`/results?search_query=${keywords}`);
   }
@@ -85,42 +112,41 @@ function SearchInput() {
       <p className="mt-4 text-base font-semibold">
         Search the video using Haystack!
       </p>
-      <form
-        className="flex flex-col w-96 mt-4 border-2 rounded-lg border-red-500"
-        onSubmit={handleSubmit}
-      >
+      <div className="flex flex-col w-96 h-10 mt-4 border-2 rounded-lg border-red-500">
         <input
-          className="pl-2 rounded-md border-red-500 outline-none"
+          className="flex h-full pl-2 rounded-md border-red-500 outline-none"
           type="text"
           placeholder="Haystack 검색"
           value={userInput}
           onChange={handleUserInputChange}
-          onKeyDown={handleArrowKeyPress}
-          ref={inputRef}
+          onKeyDown={handleKeyPress}
           autoFocus
         />
-        {userInput && (
-          <div>
-            <button
-              className={`text-left absolute w-96 rounded-md ${autoCompletions.length ? "border-red-500  bg-white border-2" : ""} mt-1`}
-              type="button"
-              onClick={handleAutoCompletionClick}
-            >
-              {autoCompletions.map((element, index) => (
-                <p
+        {autoCompletions.length > 0 && showAutoCompletions && (
+          <button
+            className="absolute w-96 mt-10 border-2 rounded-md border-red-500 bg-white  text-left"
+            onClick={handleAutoCompletionClick}
+          >
+            {autoCompletions.length > 0 &&
+              autoCompletions.map((element, index) => (
+                <div
                   key={element}
-                  index={index}
-                  className={`pl-2 ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
+                  className={`flex items-center w-95 h-10 rounded-md ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
                   onMouseEnter={handleMouseHover}
                   onMouseLeave={handleMouseHover}
+                  index={index}
                 >
+                  <img
+                    className="w-5 h-5 ml-2 mr-2"
+                    src="/searchHistoryIcon.png"
+                    alt="search history icon"
+                  />
                   {element}
-                </p>
+                </div>
               ))}
-            </button>
-          </div>
+          </button>
         )}
-      </form>
+      </div>
     </>
   );
 }
