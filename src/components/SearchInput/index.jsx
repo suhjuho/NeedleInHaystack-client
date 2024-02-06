@@ -49,7 +49,7 @@ function SearchInput() {
 
     if (pressedKey === "ArrowDown" || pressedKey === "ArrowUp") {
       arrowKeyPressed.current = true;
-
+      event.preventDefault();
       if (!showAutoCompletions) {
         return setShowAutoCompletions(true);
       }
@@ -59,27 +59,25 @@ function SearchInput() {
       setSelectedItemIndex((prevIndex) =>
         prevIndex < autoCompletions.length - 1 ? prevIndex + 1 : 0,
       );
-      setUserInput(
-        autoCompletions[
-          selectedItemIndex < autoCompletions.length - 1
-            ? selectedItemIndex + 1
-            : 0
-        ],
-      );
-    } else if (pressedKey === "ArrowUp") {
-      event.preventDefault();
 
+      const index =
+        selectedItemIndex < autoCompletions.length - 1
+          ? selectedItemIndex + 1
+          : 0;
+
+      setUserInput(autoCompletions[index]);
+    } else if (pressedKey === "ArrowUp") {
       setShowAutoCompletions(true);
       setSelectedItemIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : autoCompletions.length - 1,
       );
-      setUserInput(
-        autoCompletions[
-          selectedItemIndex > 0
-            ? selectedItemIndex - 1
-            : autoCompletions.length - 1
-        ],
-      );
+
+      const index =
+        selectedItemIndex > 0
+          ? selectedItemIndex - 1
+          : autoCompletions.length - 1;
+
+      setUserInput(autoCompletions[index]);
     } else if (pressedKey === "Escape") {
       setShowAutoCompletions(false);
       setSelectedItemIndex(-1);
@@ -126,7 +124,7 @@ function SearchInput() {
         />
         {autoCompletions.length > 0 && showAutoCompletions && (
           <button
-            className="absolute w-96 mt-10 rounded-md border-red-500 bg-white border-2 text-left"
+            className="absolute w-96 mt-10 border-2 rounded-md border-red-500 bg-white  text-left"
             onClick={handleAutoCompletionClick}
           >
             {autoCompletions.length > 0 &&
