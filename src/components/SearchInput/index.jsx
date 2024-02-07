@@ -112,7 +112,7 @@ function SearchInput() {
       <p className="mt-4 text-base font-semibold">
         Search the video using Haystack!
       </p>
-      <div className="flex flex-col w-96 h-10 mt-4 border-2 rounded-lg border-red-500">
+      <div className="flex flex-col w-96 h-10 my-4 border-2 rounded-lg border-red-500">
         <input
           className="flex h-full pl-2 rounded-md border-red-500 outline-none"
           type="text"
