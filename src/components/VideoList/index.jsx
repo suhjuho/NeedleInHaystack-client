@@ -1,23 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
-import CONSTANT from "../../constants/constant";
+import useFetchSingleVideo from "../../apis/useFetchSingleVideo";
 
 function VideoList({ youtubeVideoId }) {
-  async function fetchVideo() {
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_URL}/videos/${youtubeVideoId}`,
-    );
-
-    return response.data.video;
-  }
-
-  const { data: video, isFetching } = useQuery({
-    queryKey: ["youtubeVideoId", youtubeVideoId],
-    queryFn: () => fetchVideo(),
-    staleTime: CONSTANT.FIVE_MINUTE_IN_MILLISECONDS,
-  });
+  const { data: video, isFetching } = useFetchSingleVideo(youtubeVideoId);
 
   return (
     <div>
