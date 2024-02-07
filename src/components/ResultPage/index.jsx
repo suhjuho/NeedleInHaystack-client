@@ -37,33 +37,34 @@ function ResultPage() {
           </p>
         </div>
       )}
-      {status === "success" && data.pages[0].result !== "null" ? (
-        <>
-          {data.pages.map((group) =>
-            group.videos.map((video) => {
-              const youtubeVideoId = video[0];
+      {status === "success" &&
+        (data.pages[0].result !== "null" ? (
+          <>
+            {data.pages.map((group) =>
+              group.videos.map((video) => {
+                const youtubeVideoId = video[0];
 
-              return (
-                <VideoList
-                  key={youtubeVideoId}
-                  youtubeVideoId={youtubeVideoId}
-                />
-              );
-            }),
-          )}
-          {isFetchingNextPage && <LoadingSpin />}
-          <div ref={ref}>
-            {!hasNextPage ? "Nothing more to load" : "more..."}
+                return (
+                  <VideoList
+                    key={youtubeVideoId}
+                    youtubeVideoId={youtubeVideoId}
+                  />
+                );
+              }),
+            )}
+            {isFetchingNextPage && <LoadingSpin />}
+            <div ref={ref}>
+              {!hasNextPage ? "Nothing more to load" : "more..."}
+            </div>
+          </>
+        ) : (
+          <div className="mt-10 text-center font-bold">
+            <div className="text-xl">No results found</div>
+            <p className="mt-4">
+              Try different keywords or remove search filters
+            </p>
           </div>
-        </>
-      ) : (
-        <div className="mt-10 text-center font-bold">
-          <div className="text-xl">No results found</div>
-          <p className="mt-4">
-            Try different keywords or remove search filters
-          </p>
-        </div>
-      )}
+        ))}
     </div>
   );
 }
