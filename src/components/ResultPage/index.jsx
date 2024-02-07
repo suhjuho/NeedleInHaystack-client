@@ -1,21 +1,22 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import axios from "axios";
-import throttle from "../../utils/throttle";
 
 import Header from "../Header";
 import SearchInput from "../SearchInput";
 import VideoList from "../VideoList";
-import Loading from "../shared/Loading";
+import { Loading, LoadingSpin } from "../shared/Loading";
 
 import CONSTANT from "../../constants/constant";
 
 function ResultPage() {
   const location = useLocation();
   const query = location.search.split("?search_query=")[1];
+  const { ref, inView } = useInView();
 
-  async function fetchSearchResults(pageParam) {
+  async function fetchSearchResults({ pageParam }) {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/keywords/`,
       {
@@ -28,35 +29,20 @@ function ResultPage() {
     return response.data;
   }
 
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["search", query],
-    queryFn: ({ pageParam }) => fetchSearchResults(pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-    staleTime: CONSTANT.FIVE_MINUTE_IN_MILLISECONDS,
-  });
-
-  const handleScrollThrottle = throttle(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop + 10 >=
-      document.documentElement.offsetHeight
-    ) {
-      fetchNextPage();
-    }
-  }, CONSTANT.SCROLL_WAIT_TIME);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useInfiniteQuery({
+      queryKey: ["search", query],
+      queryFn: fetchSearchResults,
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+      staleTime: CONSTANT.FIVE_MINUTE_IN_MILLISECONDS,
+    });
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScrollThrottle);
-    return () => window.removeEventListener("scroll", handleScrollThrottle);
-  }, []);
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   if (status === "pending") {
     return (
@@ -87,7 +73,7 @@ function ResultPage() {
     <div className="flex flex-col items-center mt-10">
       <Header />
       <SearchInput />
-      {data.pageParams.length !== 0 ? (
+      {data.pages[0].result !== "null" ? (
         <>
           {data.pages.map((group) =>
             group.videos.map((video) => {
@@ -101,8 +87,10 @@ function ResultPage() {
               );
             }),
           )}
-          {isFetching && <Loading />}
-          <div>{!hasNextPage ? "Nothing more to load" : "more..."}</div>
+          {isFetchingNextPage && <LoadingSpin />}
+          <div ref={ref}>
+            {!hasNextPage ? "Nothing more to load" : "more..."}
+          </div>
         </>
       ) : (
         <div className="mt-10 text-center font-bold">
