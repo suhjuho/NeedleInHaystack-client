@@ -1,39 +1,43 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import CONSTANT from "../../constants/constant";
+
 function VideoList({ youtubeVideoId }) {
-  const [video, setVideo] = useState({});
+  async function fetchVideo() {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/videos/${youtubeVideoId}`,
+    );
 
-  useEffect(() => {
-    async function fetchVideo() {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/videos/${youtubeVideoId}`,
-      );
+    return response.data.video;
+  }
 
-      if (response.data.result === "ok") {
-        setVideo(response.data.video);
-      }
-    }
-
-    fetchVideo();
-  }, []);
+  const { data: video, isFetching } = useQuery({
+    queryKey: ["youtubeVideoId", youtubeVideoId],
+    queryFn: () => fetchVideo(),
+    staleTime: CONSTANT.FIVE_MINUTE_IN_MILLISECONDS,
+  });
 
   return (
-    <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
-      <div className="flex w-screen mb-2">
-        <img
-          className="w-[300px] mr-2"
-          src={video.thumbnailURL}
-          alt="thumbnail"
-        />
-        <div>
-          <h1>{video.title}</h1>
-          <p>{video.channel}</p>
-          <p>{video.description}</p>
-        </div>
-      </div>
-    </Link>
+    <div>
+      {!isFetching && (
+        <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
+          <div className="flex w-screen mb-2">
+            <img
+              className="w-[300px] mr-2"
+              src={video.thumbnailURL}
+              alt="thumbnail"
+            />
+            <div>
+              <h1>{video.title}</h1>
+              <p>{video.channel}</p>
+              <p>{video.description}</p>
+            </div>
+          </div>
+        </Link>
+      )}
+    </div>
   );
 }
 
