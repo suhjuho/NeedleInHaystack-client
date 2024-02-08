@@ -1,4 +1,3 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
