@@ -6,7 +6,7 @@ import useFetchSingleVideo from "../../apis/useFetchSingleVideo";
 
 import CONSTANT from "../../constants/constant";
 
-function VideoList({ youtubeVideoId }) {
+function VideoList({ innerRef, youtubeVideoId }) {
   const [isHover, setIsHover] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const { data: video, isFetching } = useFetchSingleVideo(youtubeVideoId);
@@ -27,7 +27,10 @@ function VideoList({ youtubeVideoId }) {
     <div>
       {!isFetching && (
         <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
-          <div className="flex justify-between w-screen gap-x-6 p-2">
+          <div
+            ref={innerRef}
+            className="flex justify-between w-screen gap-x-6 p-2"
+          >
             <div className="flex min-w-0 gap-x-4">
               {isAvailable ? (
                 <div

@@ -3,7 +3,7 @@ import ReactPlayer from "react-player/youtube";
 
 import CONSTANT from "../../constants/constant";
 
-function Video({ video }) {
+function Video({ video, playerRef, setCurrentVideoTime }) {
   const [isAvailable, setIsAvailable] = useState(true);
 
   return (
@@ -11,6 +11,7 @@ function Video({ video }) {
       {isAvailable ? (
         <>
           <ReactPlayer
+            ref={playerRef}
             style={{
               marginTop: 80,
               marginLeft: 16,
@@ -23,7 +24,11 @@ function Video({ video }) {
             onError={() => {
               setIsAvailable(false);
             }}
+            playing
             controls
+            onProgress={(progress) =>
+              setCurrentVideoTime(parseInt(progress.playedSeconds, 10))
+            }
           />
           <div className="flex flex-col w-[800px] mt-2 ml-4 mb-4 p-2 border-2 border-slate-500">
             <div className="border font-bold">제목: {video.title}</div>
