@@ -11,11 +11,11 @@ function VideoDetailPage() {
   const [currentVideoTime, setCurrentVideoTime] = useState(0);
   const playerRef = useRef(null);
 
-  const handleSeekToTime = (seconds) => {
+  function handleSeekToTime(seconds) {
     if (playerRef.current) {
       playerRef.current.seekTo(seconds, "fractions", "play");
     }
-  };
+  }
 
   return (
     <>
