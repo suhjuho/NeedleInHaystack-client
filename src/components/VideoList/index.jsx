@@ -4,11 +4,24 @@ import ReactPlayer from "react-player/youtube";
 
 import useFetchSingleVideo from "../../apis/useFetchSingleVideo";
 
+import CONSTANT from "../../constants/constant";
+
 function VideoList({ youtubeVideoId }) {
   const [isHover, setIsHover] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const { data: video, isFetching } = useFetchSingleVideo(youtubeVideoId);
-  const youtubeURL = `https://www.youtube.com/watch?v=${youtubeVideoId}`;
+
+  function handleMouseEnter(event) {
+    setTimeout(() => {
+      setIsHover(true);
+    }, 300);
+    event.stopPropagation();
+  }
+
+  function handleMouseLeave(event) {
+    setIsHover(false);
+    event.stopPropagation();
+  }
 
   return (
     <div>
@@ -18,16 +31,8 @@ function VideoList({ youtubeVideoId }) {
             <div className="flex min-w-0 gap-x-4">
               {isAvailable ? (
                 <div
-                  onMouseEnter={(event) => {
-                    setTimeout(() => {
-                      setIsHover(true);
-                    }, 300);
-                    event.stopPropagation();
-                  }}
-                  onMouseLeave={(event) => {
-                    setIsHover(false);
-                    event.stopPropagation();
-                  }}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <ReactPlayer
                     style={{
@@ -37,7 +42,7 @@ function VideoList({ youtubeVideoId }) {
                     }}
                     width={355}
                     height={200}
-                    url={youtubeURL}
+                    url={CONSTANT.YOUTUBE_URL + youtubeVideoId}
                     playing={isHover}
                     onError={() => {
                       setIsAvailable(false);
