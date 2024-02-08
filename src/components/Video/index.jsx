@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ReactPlayer from "react-player/youtube";
 
+import CONSTANT from "../../constants/constant";
+
 function Video({ video }) {
-  const youtubeURL = `https://www.youtube.com/watch?v=${video.youtubeVideoId}`;
   const [isAvailable, setIsAvailable] = useState(true);
 
   return (
@@ -18,7 +19,7 @@ function Video({ video }) {
             }}
             width={800}
             height={450}
-            url={youtubeURL}
+            url={CONSTANT.YOUTUBE_URL + video.youtubeVideoId}
             onError={() => {
               setIsAvailable(false);
             }}
