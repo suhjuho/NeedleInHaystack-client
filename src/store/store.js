@@ -5,4 +5,9 @@ const useUserInputStore = create((set) => ({
   setUserInput: (userInput) => set({ userInput }),
 }));
 
-export default useUserInputStore;
+const useCheckSpellStore = create((set) => ({
+  shouldCheckSpell: true,
+  setShouldCheckSpell: (shouldCheckSpell) => set({ shouldCheckSpell }),
+}));
+
+export { useUserInputStore, useCheckSpellStore };

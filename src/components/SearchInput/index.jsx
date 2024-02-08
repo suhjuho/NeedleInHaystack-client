@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useUserInputStore from "../../store/store";
+
+import { useUserInputStore, useCheckSpellStore } from "../../store/store";
 
 function SearchInput() {
   const { userInput, setUserInput } = useUserInputStore();
+  const { shouldCheckSpell, setShouldCheckSpell } = useCheckSpellStore();
   const [autoCompletions, setAutoCompletions] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const [showAutoCompletions, setShowAutoCompletions] = useState(false);
@@ -23,7 +25,7 @@ function SearchInput() {
         );
         const { data } = response;
 
-        setAutoCompletions(data);
+        setAutoCompletions(data.searchHistories);
       } catch (error) {
         console.log(error);
       }
@@ -48,6 +50,10 @@ function SearchInput() {
     const pressedKey = event.key;
 
     if (pressedKey === "ArrowDown" || pressedKey === "ArrowUp") {
+      if (autoCompletions.length === 0) {
+        return;
+      }
+
       arrowKeyPressed.current = true;
       event.preventDefault();
       if (!showAutoCompletions) {
@@ -87,6 +93,10 @@ function SearchInput() {
       setShowAutoCompletions(false);
       setSelectedItemIndex(-1);
 
+      if (!shouldCheckSpell) {
+        setShouldCheckSpell(true);
+      }
+
       navigate(`/results?search_query=${keywords}`);
     }
   }
@@ -120,6 +130,7 @@ function SearchInput() {
           value={userInput}
           onChange={handleUserInputChange}
           onKeyDown={handleKeyPress}
+          spellCheck="false"
           autoFocus
         />
         {autoCompletions.length > 0 && showAutoCompletions && (

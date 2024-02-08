@@ -3,13 +3,13 @@ import axios from "axios";
 
 import CONSTANT from "../constants/constant";
 
-function useFetchAllVideos(query) {
+function useFetchAllVideos(query, shouldCheckSpell = true) {
   async function fetchAllVideos({ pageParam }) {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/keywords/`,
       {
         userInput: query.split("+"),
-        shouldSpellCheck: true,
+        shouldCheckSpell,
         pageParam,
       },
     );
@@ -18,7 +18,7 @@ function useFetchAllVideos(query) {
   }
 
   return useInfiniteQuery({
-    queryKey: ["search", query],
+    queryKey: ["search", query, shouldCheckSpell],
     queryFn: fetchAllVideos,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPage,
