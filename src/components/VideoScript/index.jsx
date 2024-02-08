@@ -17,6 +17,7 @@ function VideoScript({
 
   useEffect(() => {
     translate.engine = "google";
+
     async function translateAll(transcripts) {
       const scriptsPromises = transcripts.map(async (script) => {
         const koreanScript = await translate(script, "ko");
@@ -26,6 +27,7 @@ function VideoScript({
 
       try {
         const scripts = await Promise.all(scriptsPromises);
+
         setKoreanScripts(scripts);
       } catch (error) {
         setKoreanScripts([]);
@@ -33,7 +35,7 @@ function VideoScript({
     }
 
     translateAll(transcripts);
-  }, [transcripts]);
+  }, []);
 
   useEffect(() => {
     transcriptTimeLines.forEach((transcriptTimeLine, index) => {
