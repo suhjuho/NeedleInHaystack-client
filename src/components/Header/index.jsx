@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
 import { useUserLoginStatusStore } from "../../store/store";
@@ -10,25 +12,6 @@ function Header() {
   const { isLoggedIn, setIsLoggedIn } = useUserLoginStatusStore();
   const [user, setUser] = useState(null);
   const [isUserIconClicked, setUserIconClicked] = useState(false);
-
-  async function verifyLogInStatus() {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}`, {
-        withCredentials: true,
-      });
-
-      if (response.data.result === "ok") {
-        setIsLoggedIn(true);
-        setUser(response.data.user);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    verifyLogInStatus();
-  }, []);
 
   async function logIn(userData) {
     try {
