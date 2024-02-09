@@ -13,6 +13,9 @@ function useFetchAllVideos(query, shouldCheckSpell = true) {
         shouldCheckSpell,
         pageParam,
       },
+      {
+        withCredentials: true,
+      },
     );
     const fetchEndTime = Date.now();
     const videosFetchTime =

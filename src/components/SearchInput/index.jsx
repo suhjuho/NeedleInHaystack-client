@@ -2,17 +2,39 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { useUserInputStore, useCheckSpellStore } from "../../store/store";
+import {
+  useUserInputStore,
+  useCheckSpellStore,
+  useUserLoginStatusStore,
+} from "../../store/store";
 
 function SearchInput() {
   const { userInput, setUserInput } = useUserInputStore();
   const { shouldCheckSpell, setShouldCheckSpell } = useCheckSpellStore();
+  const { isLoggedIn } = useUserLoginStatusStore();
   const [autoCompletions, setAutoCompletions] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const [showAutoCompletions, setShowAutoCompletions] = useState(false);
+  const [showSearchHistory, setShowSearchHistory] = useState(false);
 
   const navigate = useNavigate();
+  const inputRef = useRef(null);
   const arrowKeyPressed = useRef(false);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setShowAutoCompletions(false);
+        setShowSearchHistory(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     async function getAutoCompletions(userInput) {
@@ -21,20 +43,29 @@ function SearchInput() {
           `${import.meta.env.VITE_BASE_URL}/auto-completions`,
           {
             params: { userInput },
+            withCredentials: true,
           },
         );
         const { data } = response;
 
         setAutoCompletions(data.searchHistories);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
 
-    if (!arrowKeyPressed.current) {
+    if (userInput !== "" && !arrowKeyPressed.current) {
       getAutoCompletions(userInput);
     }
-  }, [userInput, arrowKeyPressed]);
+
+    if (showSearchHistory) {
+      getAutoCompletions(userInput);
+    }
+
+    if (userInput.length === 0) {
+      getAutoCompletions(userInput);
+    }
+  }, [userInput, arrowKeyPressed, showSearchHistory]);
 
   function handleUserInputChange(event) {
     event.preventDefault();
@@ -48,6 +79,8 @@ function SearchInput() {
 
   function handleKeyPress(event) {
     const pressedKey = event.key;
+
+    setShowSearchHistory(false);
 
     if (pressedKey === "ArrowDown" || pressedKey === "ArrowUp") {
       if (autoCompletions.length === 0) {
@@ -90,7 +123,6 @@ function SearchInput() {
     } else if (pressedKey === "Enter") {
       const keywords = userInput.replace(/\s+/g, " ").split(" ").join("+");
 
-      setShowAutoCompletions(false);
       setSelectedItemIndex(-1);
 
       if (!shouldCheckSpell) {
@@ -116,6 +148,10 @@ function SearchInput() {
 
     navigate(`/results?search_query=${keywords}`);
   }
+  function handleClick() {
+    setShowSearchHistory(true);
+    setShowAutoCompletions(true);
+  }
 
   return (
     <>
@@ -130,7 +166,9 @@ function SearchInput() {
           value={userInput}
           onChange={handleUserInputChange}
           onKeyDown={handleKeyPress}
+          onClick={handleClick}
           spellCheck="false"
+          ref={inputRef}
           autoFocus
         />
         {autoCompletions.length > 0 && showAutoCompletions && (
@@ -149,9 +187,10 @@ function SearchInput() {
                 >
                   <img
                     className="w-5 h-5 ml-2 mr-2"
-                    src="/searchHistoryIcon.png"
+                    src={`${isLoggedIn ? "/searchHistoryIcon.png" : "/searchIcon.png"}`}
                     alt="search history icon"
                   />
+
                   {element}
                 </div>
               ))}
