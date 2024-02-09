@@ -12,6 +12,9 @@ function useFetchAllVideos(query, shouldCheckSpell = true) {
         shouldCheckSpell,
         pageParam,
       },
+      {
+        withCredentials: true,
+      },
     );
 
     return response.data;
