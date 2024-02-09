@@ -5,6 +5,7 @@ import CONSTANT from "../constants/constant";
 
 function useFetchAllVideos(query, shouldCheckSpell = true) {
   async function fetchAllVideos({ pageParam }) {
+    const fetchStartTime = Date.now();
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/keywords/`,
       {
@@ -13,6 +14,11 @@ function useFetchAllVideos(query, shouldCheckSpell = true) {
         pageParam,
       },
     );
+    const fetchEndTime = Date.now();
+    const videosFetchTime =
+      Math.floor(((fetchEndTime - fetchStartTime) / 1000) * 100) / 100;
+
+    response.data.videosFetchTime = videosFetchTime;
 
     return response.data;
   }
