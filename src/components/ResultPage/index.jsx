@@ -68,6 +68,12 @@ function ResultPage() {
                 </span>
               </p>
             )}
+            {data.pages[0].totalVideosCount && (
+              <div className="flex-none ml-2 mr-auto font-black text-sm">
+                About {data.pages[0].totalVideosCount} results (
+                {data.pages[0].requestTime} seconds)
+              </div>
+            )}
             {data.pages.map((group) =>
               group.videos.map((video, index) => {
                 const youtubeVideoId = video[0];
