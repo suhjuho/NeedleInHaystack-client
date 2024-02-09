@@ -70,7 +70,7 @@ function ResultPage() {
             )}
             <div className="ml-2 mr-auto font-medium text-sm text-gray-500">
               About {data.pages[0].totalVideosCount} results (
-              {data.pages[0].requestTime} seconds)
+              {data.pages[0].videosFetchTime} seconds)
             </div>
             {data.pages.map((group) =>
               group.videos.map((video, index) => {
@@ -98,7 +98,7 @@ function ResultPage() {
         ) : (
           <>
             <div className="ml-2 mr-auto font-medium text-sm text-gray-500">
-              About 0 results ({data.pages[0].requestTime} seconds)
+              About 0 results ({data.pages[0].videosFetchTime} seconds)
             </div>
             <div className="mt-3 text-center">
               {!shouldCheckSpell && (

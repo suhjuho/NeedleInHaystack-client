@@ -15,10 +15,10 @@ function useFetchAllVideos(query, shouldCheckSpell = true) {
       },
     );
     const fetchEndTime = Date.now();
-    const requestTime =
+    const videosFetchTime =
       Math.floor(((fetchEndTime - fetchStartTime) / 1000) * 100) / 100;
 
-    response.data.requestTime = requestTime;
+    response.data.videosFetchTime = videosFetchTime;
 
     return response.data;
   }
