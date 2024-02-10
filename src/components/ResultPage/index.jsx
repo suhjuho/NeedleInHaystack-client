@@ -68,6 +68,10 @@ function ResultPage() {
                 </span>
               </p>
             )}
+            <div className="ml-2 mr-auto font-medium text-sm text-gray-500">
+              About {data.pages[0].totalVideosCount} results (
+              {data.pages[0].videosFetchTime} seconds)
+            </div>
             {data.pages.map((group) =>
               group.videos.map((video, index) => {
                 const youtubeVideoId = video[0];
@@ -92,33 +96,38 @@ function ResultPage() {
             <div>{!hasNextPage ? "Nothing more to load" : "more..."}</div>
           </>
         ) : (
-          <div className="mt-3 text-center">
-            {!shouldCheckSpell && (
-              <p className="mb-10 text-4xl">
-                Did you mean
-                <span
-                  className="font-bold italic ml-2 hover:text-purple-900 hover:underline"
-                  onClick={handleSearchInsteadClick}
-                  role="button"
-                  tabIndex={0}
-                >
-                  {data?.pages[0].recommendedSearchKeyword}
+          <>
+            <div className="ml-2 mr-auto font-medium text-sm text-gray-500">
+              About 0 results ({data.pages[0].videosFetchTime} seconds)
+            </div>
+            <div className="mt-3 text-center">
+              {!shouldCheckSpell && (
+                <p className="mb-10 text-4xl">
+                  Did you mean
+                  <span
+                    className="font-bold italic ml-2 hover:text-purple-900 hover:underline"
+                    onClick={handleSearchInsteadClick}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    {data?.pages[0].recommendedSearchKeyword}
+                  </span>
+                  ?
+                </p>
+              )}
+              <p className="mb-10">
+                Your search -
+                <span className="font-bold ml-2 mr-2">
+                  {data?.pages[0].query}
                 </span>
-                ?
+                did not match any documents.
               </p>
-            )}
-            <p className="mb-10">
-              Your search -
-              <span className="font-bold ml-2 mr-2">
-                {data?.pages[0].query}
-              </span>
-              did not match any documents.
-            </p>
-            <div className="text-xl font-bold">No results found</div>
-            <p className="font-bold mt-5">
-              Try different keywords or remove search filters
-            </p>
-          </div>
+              <div className="text-xl font-bold">No results found</div>
+              <p className="font-bold mt-5">
+                Try different keywords or remove search filters
+              </p>
+            </div>
+          </>
         ))}
     </div>
   );
