@@ -1,12 +1,33 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { LoadingSpin } from "../shared/Loading";
 
 function AdminPage() {
+  const navigate = useNavigate();
   const [isCrawling, setIsCrawling] = useState(false);
   const [entryURL, setEntryURL] = useState("");
   const [crawlingLogList, setCrawlingLogList] = useState([]);
+
+  useEffect(() => {
+    async function checkLogin() {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/auth/check`,
+        {
+          withCredentials: true,
+        },
+      );
+
+      if (!response.data.result) {
+        navigate("/");
+      }
+
+      return response.data;
+    }
+
+    checkLogin();
+  }, []);
 
   useEffect(() => {
     let eventSource;
@@ -71,17 +92,19 @@ function AdminPage() {
 
   const handleStartCrawling = async (ev) => {
     ev.preventDefault();
-    const response = await startCrawling(entryURL);
+
+    await startCrawling(entryURL);
   };
 
   const handleStopCrawling = async (ev) => {
     ev.preventDefault();
-    const response = await stopCrawling(entryURL);
+
+    await stopCrawling(entryURL);
   };
 
   return (
     <div className="flex flex-col items-center mt-10">
-      <h1>Admin Page</h1>
+      <h1 className="text-2xl">Managing Web Crawler</h1>
       <form action="" className="flex items-center">
         <input
           onChange={(ev) => setEntryURL(ev.target.value)}
