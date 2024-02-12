@@ -1,22 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { BugAntIcon } from "@heroicons/react/24/solid";
 
 import axios from "axios";
 
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
-import { useUserLoginStatusStore } from "../../store/store";
+import { useUserStore } from "../../store/store";
 
 function Header() {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn } = useUserLoginStatusStore();
-  const [user, setUser] = useState(null);
+  const { user, setUser, isLoggedIn, setIsLoggedIn } = useUserStore();
   const [isUserIconClicked, setUserIconClicked] = useState(false);
+
+  useEffect(() => {
+    async function checkLogin() {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/auth/check`,
+        {
+          withCredentials: true,
+        },
+      );
+
+      if (response.data.result) {
+        setIsLoggedIn(true);
+        setUser(response.data.user);
+      }
+
+      return response.data;
+    }
+
+    checkLogin();
+  }, []);
 
   async function logIn(userData) {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/signIn`,
+        `${import.meta.env.VITE_BASE_URL}/auth/signIn`,
         userData,
         {
           headers: {
@@ -49,14 +69,14 @@ function Header() {
   }
 
   function handleUserIconClick() {
-    setUserIconClicked((prev) => !prev);
+    setUserIconClicked((isUserIconClicked) => !isUserIconClicked);
   }
 
   async function handleLogOut() {
     try {
       await signOut(auth);
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/signOut`,
+        `${import.meta.env.VITE_BASE_URL}/auth/signOut`,
         { withCredentials: true },
       );
       if (response.data.result === "ok") {
@@ -127,6 +147,17 @@ function Header() {
                     alt="signOutIcon"
                   />
                   <p className="m-3">Log out</p>
+                </div>
+                <div
+                  className="flex items-center hover:bg-slate-100 cursor-pointer"
+                  role="button"
+                  onClick={() => {
+                    navigate("/admin");
+                  }}
+                  tabIndex={0}
+                >
+                  <BugAntIcon className="h-[25px] justify-center items-center m-3" />
+                  <p className="m-3">Crawler</p>
                 </div>
               </div>
             )}
