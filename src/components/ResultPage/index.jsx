@@ -3,16 +3,16 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 import Header from "../Header";
-import SearchInput from "../SearchInput";
 import VideoList from "../VideoList";
 import { Loading, LoadingSpin } from "../shared/Loading";
 
 import useFetchAllVideos from "../../apis/useFetchAllVideos";
-import { useCheckSpellStore } from "../../store/store";
+import { useCheckSpellStore, useHeaderStateStore } from "../../store/store";
 
 function ResultPage() {
   const location = useLocation();
   const { shouldCheckSpell, setShouldCheckSpell } = useCheckSpellStore();
+  const { setHeaderState } = useHeaderStateStore();
   const query = location.search.split("?search_query=")[1];
   const { ref, inView } = useInView();
 
@@ -20,6 +20,10 @@ function ResultPage() {
     shouldCheckSpell
       ? useFetchAllVideos(query)
       : useFetchAllVideos(query, false);
+
+  useEffect(() => {
+    setHeaderState("ResultPage");
+  }, []);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -36,9 +40,8 @@ function ResultPage() {
   }
 
   return (
-    <div className="flex flex-col items-center mt-10">
+    <div className="flex flex-col">
       <Header />
-      <SearchInput />
       {status === "pending" && <Loading />}
       {status === "error" && (
         <div className="mt-10 text-center font-bold">
