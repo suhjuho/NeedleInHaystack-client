@@ -154,50 +154,44 @@ function SearchInput() {
   }
 
   return (
-    <>
-      <p className="mt-4 text-base font-semibold">
-        Search the video using Haystack!
-      </p>
-      <div className="flex flex-col w-96 h-10 my-4 border-2 rounded-lg border-red-500">
-        <input
-          className="flex h-full pl-2 rounded-md border-red-500 outline-none"
-          type="text"
-          placeholder="Haystack 검색"
-          value={userInput}
-          onChange={handleUserInputChange}
-          onKeyDown={handleKeyPress}
-          onClick={handleClick}
-          spellCheck="false"
-          ref={inputRef}
-          autoFocus
-        />
-        {autoCompletions.length > 0 && showAutoCompletions && (
-          <button
-            className="absolute w-96 mt-10 border-2 rounded-md border-red-500 bg-white  text-left"
-            onClick={handleAutoCompletionClick}
-          >
-            {autoCompletions.length > 0 &&
-              autoCompletions.map((element, index) => (
-                <div
-                  key={element}
-                  className={`flex items-center w-95 h-10 rounded-md ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
-                  onMouseEnter={handleMouseHover}
-                  onMouseLeave={handleMouseHover}
-                  index={index}
-                >
-                  <img
-                    className="w-5 h-5 ml-2 mr-2"
-                    src={`${isLoggedIn ? "/searchHistoryIcon.png" : "/searchIcon.png"}`}
-                    alt="search history icon"
-                  />
-
-                  {element}
-                </div>
-              ))}
-          </button>
-        )}
-      </div>
-    </>
+    <div className="flex flex-col w-96 h-10 border-2 rounded-lg border-red-500">
+      <input
+        className="flex h-full pl-2 rounded-md border-red-500 outline-none"
+        type="text"
+        placeholder="Haystack 검색"
+        value={userInput}
+        onChange={handleUserInputChange}
+        onKeyDown={handleKeyPress}
+        onClick={handleClick}
+        spellCheck="false"
+        ref={inputRef}
+        autoFocus
+      />
+      {autoCompletions.length > 0 && showAutoCompletions && (
+        <button
+          className="absolute w-96 mt-10 border-2 rounded-md border-red-500 bg-white text-left"
+          onClick={handleAutoCompletionClick}
+        >
+          {autoCompletions.length > 0 &&
+            autoCompletions.map((element, index) => (
+              <div
+                key={element}
+                className={`flex items-center w-95 h-10 rounded-md ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
+                onMouseEnter={handleMouseHover}
+                onMouseLeave={handleMouseHover}
+                index={index}
+              >
+                <img
+                  className="w-5 h-5 ml-2 mr-2"
+                  src={`${isLoggedIn ? "/searchHistoryIcon.png" : "/searchIcon.png"}`}
+                  alt="search history icon"
+                />
+                {element}
+              </div>
+            ))}
+        </button>
+      )}
+    </div>
   );
 }
 
