@@ -10,12 +10,14 @@ const useCheckSpellStore = create((set) => ({
   setShouldCheckSpell: (shouldCheckSpell) => set({ shouldCheckSpell }),
 }));
 
-const useUserLoginStatusStore = create((set) => ({
+const useUserStore = create((set) => ({
   isLoggedIn: false,
+  user: {},
   setIsLoggedIn: (isLoggedIn) =>
     set({
       isLoggedIn,
     }),
+  setUser: (user) => set({ user }),
 }));
 
-export { useUserInputStore, useCheckSpellStore, useUserLoginStatusStore };
+export { useUserInputStore, useCheckSpellStore, useUserStore };
