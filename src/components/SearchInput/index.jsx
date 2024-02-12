@@ -5,13 +5,13 @@ import axios from "axios";
 import {
   useUserInputStore,
   useCheckSpellStore,
-  useUserLoginStatusStore,
+  useUserStore,
 } from "../../store/store";
 
 function SearchInput() {
   const { userInput, setUserInput } = useUserInputStore();
   const { shouldCheckSpell, setShouldCheckSpell } = useCheckSpellStore();
-  const { isLoggedIn } = useUserLoginStatusStore();
+  const { isLoggedIn } = useUserStore();
   const [autoCompletions, setAutoCompletions] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const [showAutoCompletions, setShowAutoCompletions] = useState(false);
