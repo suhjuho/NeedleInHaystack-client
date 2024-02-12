@@ -20,4 +20,14 @@ const useUserStore = create((set) => ({
   setUser: (user) => set({ user }),
 }));
 
-export { useUserInputStore, useCheckSpellStore, useUserStore };
+const useHeaderStateStore = create((set) => ({
+  headerState: "MainPage",
+  setHeaderState: (headerState) => set({ headerState }),
+}));
+
+export {
+  useUserInputStore,
+  useCheckSpellStore,
+  useUserStore,
+  useHeaderStateStore,
+};
