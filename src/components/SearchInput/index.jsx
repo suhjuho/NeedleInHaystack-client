@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClockIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 import axios from "axios";
 
 import {
@@ -181,11 +183,11 @@ function SearchInput() {
                 onMouseLeave={handleMouseHover}
                 index={index}
               >
-                <img
-                  className="w-5 h-5 ml-2 mr-2"
-                  src={`${isLoggedIn ? "/searchHistoryIcon.png" : "/searchIcon.png"}`}
-                  alt="search history icon"
-                />
+                {isLoggedIn ? (
+                  <ClockIcon className="h-5 mx-2" />
+                ) : (
+                  <MagnifyingGlassIcon className="h-5 mx-2" />
+                )}
                 {element}
               </div>
             ))}

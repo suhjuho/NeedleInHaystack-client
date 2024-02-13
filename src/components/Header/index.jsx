@@ -4,6 +4,7 @@ import {
   BugAntIcon,
   UserCircleIcon,
   ArrowUturnLeftIcon,
+  ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 
 import axios from "axios";
@@ -177,10 +178,9 @@ function Header() {
                 onClick={handleLogOut}
                 tabIndex={0}
               >
-                <img
+                <ArrowRightStartOnRectangleIcon
                   className="h-[25px] justify-center items-center m-3"
-                  src="signOutIcon.png"
-                  alt="signOutIcon"
+                  alt="signOut"
                 />
                 <p className="m-3">Log out</p>
               </div>
