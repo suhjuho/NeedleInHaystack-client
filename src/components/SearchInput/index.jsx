@@ -125,6 +125,10 @@ function SearchInput() {
     } else if (pressedKey === "Enter") {
       const keywords = userInput.replace(/\s+/g, " ").split(" ").join("+");
 
+      if (keywords === "") {
+        return;
+      }
+
       setSelectedItemIndex(-1);
 
       if (!shouldCheckSpell) {
@@ -150,47 +154,72 @@ function SearchInput() {
 
     navigate(`/results?search_query=${keywords}`);
   }
-  function handleClick() {
+
+  function handleClickInput() {
     setShowSearchHistory(true);
     setShowAutoCompletions(true);
   }
 
+  function handleClickGlassIcon() {
+    const keywords = userInput.replace(/\s+/g, " ").split(" ").join("+");
+
+    if (keywords === "") {
+      return;
+    }
+
+    setSelectedItemIndex(-1);
+
+    if (!shouldCheckSpell) {
+      setShouldCheckSpell(true);
+    }
+
+    navigate(`/results?search_query=${keywords}`);
+  }
+
   return (
-    <div className="flex flex-col w-96 h-10 border-2 rounded-lg border-red-500">
-      <input
-        className="flex h-full pl-2 rounded-md border-red-500 outline-none"
-        type="text"
-        placeholder="Haystack 검색"
-        value={userInput}
-        onChange={handleUserInputChange}
-        onKeyDown={handleKeyPress}
-        onClick={handleClick}
-        spellCheck="false"
-        ref={inputRef}
-        autoFocus
-      />
+    <div className="relative flex flex-col gap-4 flex-grow max-w-[600px] items-center justify-center">
+      <div className="flex flex-grow w-full">
+        <input
+          type="search"
+          placeholder="Search Needle"
+          className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-xl w-full focus:border-blue-500 outline-none"
+          value={userInput}
+          onChange={handleUserInputChange}
+          onKeyDown={handleKeyPress}
+          onClick={handleClickInput}
+          spellCheck="false"
+          ref={inputRef}
+          autoFocus
+        />
+        <button
+          onClick={handleClickGlassIcon}
+          aria-label="Search"
+          className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0 flex items-center justify-center bg-secondary hover:bg-secondary-hover"
+        >
+          <MagnifyingGlassIcon className="h-6 w-6" />
+        </button>
+      </div>
       {autoCompletions.length > 0 && showAutoCompletions && (
         <button
-          className="absolute w-96 mt-10 border-2 rounded-md border-red-500 bg-white text-left"
+          className="absolute top-14 w-full rounded-md border border-secondary-border bg-white shadow-inner shadow-secondary text-left z-10"
           onClick={handleAutoCompletionClick}
         >
-          {autoCompletions.length > 0 &&
-            autoCompletions.map((element, index) => (
-              <div
-                key={element}
-                className={`flex items-center w-95 h-10 rounded-md ${Number(index) === selectedItemIndex ? "bg-slate-300" : ""}`}
-                onMouseEnter={handleMouseHover}
-                onMouseLeave={handleMouseHover}
-                index={index}
-              >
-                {isLoggedIn ? (
-                  <ClockIcon className="h-5 mx-2" />
-                ) : (
-                  <MagnifyingGlassIcon className="h-5 mx-2" />
-                )}
-                {element}
-              </div>
-            ))}
+          {autoCompletions.map((autoCompletion, index) => (
+            <div
+              key={autoCompletion}
+              className={`flex items-center w-full h-10 py-2 text-xl rounded-md ${Number(index) === selectedItemIndex ? "bg-secondary-hover" : ""}`}
+              onMouseEnter={handleMouseHover}
+              onMouseLeave={handleMouseHover}
+              index={index}
+            >
+              {isLoggedIn ? (
+                <ClockIcon className="h-6 mx-2" />
+              ) : (
+                <MagnifyingGlassIcon className="h-6 mx-2" />
+              )}
+              {autoCompletion}
+            </div>
+          ))}
         </button>
       )}
     </div>
