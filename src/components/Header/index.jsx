@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { BugAntIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
+import {
+  BugAntIcon,
+  UserCircleIcon,
+  ArrowUturnLeftIcon,
+} from "@heroicons/react/24/solid";
 
 import axios from "axios";
 
@@ -126,8 +130,8 @@ function Header() {
           role="button"
           tabIndex={0}
         >
-          <img className="h-[30px]" src="/userIcon.png" alt="signIn" />
-          <p className="ml-2">Sign in</p>
+          <UserCircleIcon className="h-[35px] items-center" alt="signIn" />
+          <p className="px-1">Sign in</p>
         </div>
       ) : (
         <div className="flex flex-col mr-4 ml-auto items-center flex-shrink-0 cursor-pointer">
@@ -138,7 +142,7 @@ function Header() {
             tabIndex={0}
           >
             <img
-              className="h-[50px] rounded-full"
+              className="h-[51px] rounded-full"
               src={user?.photoURL}
               alt="signIn"
             />
