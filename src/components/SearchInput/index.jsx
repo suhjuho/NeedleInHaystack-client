@@ -155,12 +155,12 @@ function SearchInput() {
     navigate(`/results?search_query=${keywords}`);
   }
 
-  function handleClickInput() {
+  function handleInputClick() {
     setShowSearchHistory(true);
     setShowAutoCompletions(true);
   }
 
-  function handleClickGlassIcon() {
+  function handleGlassIconClick() {
     const keywords = userInput.replace(/\s+/g, " ").split(" ").join("+");
 
     if (keywords === "") {
@@ -186,13 +186,13 @@ function SearchInput() {
           value={userInput}
           onChange={handleUserInputChange}
           onKeyDown={handleKeyPress}
-          onClick={handleClickInput}
+          onClick={handleInputClick}
           spellCheck="false"
           ref={inputRef}
           autoFocus
         />
         <button
-          onClick={handleClickGlassIcon}
+          onClick={handleGlassIconClick}
           aria-label="Search"
           className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0 flex items-center justify-center bg-secondary hover:bg-secondary-hover"
         >
