@@ -116,8 +116,9 @@ function Header() {
         {headerState !== "MainPage" && (
           <>
             <Link to="/">
-              <div className="p-2 text-xl font-bold rounded-full hover:bg-sky-50">
-                Needle In Haystack
+              <div className="flex items-center justify-center text-center ">
+                <img className="w-6" src="/assets/LogoSample2.png" alt="Logo" />
+                <div className="p-2 text-xl font-bold">Needle In Haystack</div>
               </div>
             </Link>
             <SearchInput />
@@ -131,7 +132,10 @@ function Header() {
           role="button"
           tabIndex={0}
         >
-          <UserCircleIcon className="h-[35px] items-center" alt="signIn" />
+          <UserCircleIcon
+            className="h-[35px] items-center fill-blue-300"
+            alt="signIn"
+          />
           <p className="px-1">Sign in</p>
         </div>
       ) : (
