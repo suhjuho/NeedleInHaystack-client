@@ -26,19 +26,21 @@ function VideoDetailPage() {
   return (
     <>
       <Header />
-      <Video
-        video={video}
-        playerRef={playerRef}
-        setCurrentVideoTime={setCurrentVideoTime}
-      />
-      <VideoScript
-        currentVideoTime={currentVideoTime}
-        seekToTime={handleSeekToTime}
-        youtubeVideoId={video.youtubeVideoId}
-        transcript={video.transcript}
-        transcripts={video.transcripts}
-        transcriptTimeLines={video.transcriptTimeLines}
-      />
+      <div className="flex">
+        <Video
+          video={video}
+          playerRef={playerRef}
+          setCurrentVideoTime={setCurrentVideoTime}
+        />
+        <VideoScript
+          currentVideoTime={currentVideoTime}
+          seekToTime={handleSeekToTime}
+          youtubeVideoId={video.youtubeVideoId}
+          transcript={video.transcript}
+          transcripts={video.transcripts}
+          transcriptTimeLines={video.transcriptTimeLines}
+        />
+      </div>
     </>
   );
 }
