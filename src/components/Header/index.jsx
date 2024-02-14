@@ -121,7 +121,7 @@ function Header() {
                 <div className="p-2 text-xl font-bold">Needle In Haystack</div>
               </div>
             </Link>
-            <SearchInput />
+            {headerState !== "AdminPage" && <SearchInput />}
           </>
         )}
       </div>
