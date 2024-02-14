@@ -82,7 +82,7 @@ function VideoScript({
       className="overflow-y-auto w-[35rem] mr-4 mt-5 ml-10 border-2 border-grey-800 rounded-xl"
       style={{ height: showTranscript ? playerDimensions.height : "" }}
     >
-      <div className="flex items-center justify-between sticky z-10 p-2 top-0  bg-white font-bold text-2xl">
+      <div className="flex items-center justify-between sticky z-10 p-2 top-0 bg-white font-bold text-2xl">
         Transcript
         <div className="relative">
           <button
@@ -112,7 +112,6 @@ function VideoScript({
           </button>
         </div>
       </div>
-
       {showTranscript && (
         <div className="overflow-y-auto overflow-x-hidden">
           {transcript !== " " &&

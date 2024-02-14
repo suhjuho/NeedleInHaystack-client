@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ReactPlayer from "react-player/youtube";
 import CONSTANT from "../../constants/constant";
 import { usePlayerDimensions } from "../../store/store";
@@ -8,12 +8,12 @@ function Video({ video, playerRef, setCurrentVideoTime }) {
   const [showMore, setShowMore] = useState(false);
   const { playerDimensions, setPlayerDimensions } = usePlayerDimensions();
 
+  const playerContainerRef = useRef();
+
   useEffect(() => {
     function handleResize() {
-      const playerContainer = document.getElementById("player-container");
-
-      if (playerContainer) {
-        const rect = playerContainer.getBoundingClientRect();
+      if (playerContainerRef) {
+        const rect = playerContainerRef.current.getBoundingClientRect();
 
         setPlayerDimensions({
           width: `${rect.width}px`,
@@ -33,7 +33,11 @@ function Video({ video, playerRef, setCurrentVideoTime }) {
   }
 
   return (
-    <div id="player-container" className="relative w-full">
+    <div
+      id="player-container"
+      ref={playerContainerRef}
+      className="relative w-full"
+    >
       {isAvailable ? (
         <div className="absolute mt-4 ml-4 mb-4">
           <ReactPlayer
@@ -51,7 +55,7 @@ function Video({ video, playerRef, setCurrentVideoTime }) {
             width={playerDimensions.width}
             height={playerDimensions.height}
           />
-          <div className="mt-4 mb-4 p-2 border-gray-500 rounded-xl bg-gray-100">
+          <div className="my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
             <div className="mb-3 font-bold text-xl">{video.title}</div>
             <div className="mb-3 font-bold">{video.channel}</div>
             {video.description.length <= 100 ? (
