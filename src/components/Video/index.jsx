@@ -23,6 +23,7 @@ function Video({ video, playerRef, setCurrentVideoTime }) {
     }
 
     handleResize();
+
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);

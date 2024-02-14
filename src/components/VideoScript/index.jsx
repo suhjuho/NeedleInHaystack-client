@@ -47,6 +47,7 @@ function VideoScript({
       const isInTime =
         timeToSeconds(transcriptTimeLine) <= currentVideoTime &&
         timeToSeconds(transcriptTimeLines[index + 1]) > currentVideoTime;
+
       if (isInTime) {
         setFocusedIndex(index);
       }
