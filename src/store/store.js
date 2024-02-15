@@ -25,9 +25,15 @@ const useHeaderStateStore = create((set) => ({
   setHeaderState: (headerState) => set({ headerState }),
 }));
 
+const usePlayerDimensions = create((set) => ({
+  playerDimensions: { width: "100%", height: "100%" },
+  setPlayerDimensions: (playerDimensions) => set({ playerDimensions }),
+}));
+
 export {
   useUserInputStore,
   useCheckSpellStore,
   useUserStore,
   useHeaderStateStore,
+  usePlayerDimensions,
 };
