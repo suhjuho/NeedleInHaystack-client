@@ -17,13 +17,13 @@ function Video({ video, playerRef, currentVideoTime, setCurrentVideoTime }) {
 
   const videoLeft = useRef(0);
   const videoTop = useRef(0);
-  const [videoRight, setVideoRight] = useState(0);
-  const [videoBottom, setVideoBottom] = useState(0);
+  const videoRight = useRef(0);
+  const videoBottom = useRef(0);
 
-  const startX = useRef(0);
-  const startY = useRef(0);
-  const endX = useRef(0);
-  const endY = useRef(0);
+  const captureStartX = useRef(0);
+  const captureStartY = useRef(0);
+  const captureEndX = useRef(0);
+  const captureEndY = useRef(0);
 
   const playerContainerRef = useRef();
   const elementRef = useRef(null);
@@ -55,9 +55,8 @@ function Video({ video, playerRef, currentVideoTime, setCurrentVideoTime }) {
 
       videoLeft.current = rect.left;
       videoTop.current = rect.top;
-
-      setVideoRight(() => Math.floor(rect.right));
-      setVideoBottom(() => Math.floor(rect.bottom));
+      videoRight.current = Math.floor(rect.right);
+      videoBottom.current = Math.floor(rect.bottom);
     }
 
     getVideoSize();
@@ -68,48 +67,50 @@ function Video({ video, playerRef, currentVideoTime, setCurrentVideoTime }) {
   }
 
   function handleMouseDown(event) {
-    startX.current = event.clientX - videoLeft.current;
-    startY.current = event.clientY - videoTop.current;
+    captureStartX.current = event.clientX - videoLeft.current;
+    captureStartY.current = event.clientY - videoTop.current;
   }
 
   async function handleMouseUp(event) {
-    setIsLoading(() => true);
+    setIsLoading(true);
     setExtractedCode(() => null);
 
-    endX.current = event.clientX - videoLeft.current;
-    endY.current = event.clientY - videoTop.current;
+    captureEndX.current = event.clientX - videoLeft.current;
+    captureEndY.current = event.clientY - videoTop.current;
 
     const clientCoordinate = {
-      left: Math.min(startX.current, endX.current),
-      top: Math.min(startY.current, endY.current),
+      left: Math.min(captureStartX.current, captureEndX.current),
+      top: Math.min(captureStartY.current, captureEndY.current),
     };
 
     const videoSize = {
-      width: videoRight - videoLeft.current,
-      height: videoBottom - videoTop.current,
+      width: videoRight.current - videoLeft.current,
+      height: videoBottom.current - videoTop.current,
     };
 
     const captureBoxSize = {
       width:
-        Math.max(startX.current, endX.current) -
-        Math.min(startX.current, endX.current),
+        Math.max(captureStartX.current, captureEndX.current) -
+        Math.min(captureStartX.current, captureEndX.current),
       height:
-        Math.max(startY.current, endY.current) -
-        Math.min(startY.current, endY.current),
+        Math.max(captureStartY.current, captureEndY.current) -
+        Math.min(captureStartY.current, captureEndY.current),
     };
 
-    const response = await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/extraction`, {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/extraction`,
+      {
         clientCoordinate,
         videoSize,
         captureBoxSize,
         currentVideoTime,
         youtubeVideoId: video.youtubeVideoId,
-      })
-      .then((res) => {
-        setIsLoading(() => false);
-        return res;
-      });
+      },
+    );
+
+    if (response.data) {
+      setIsLoading(false);
+    }
 
     await navigator.clipboard.writeText(response.data.extractedCode);
 
