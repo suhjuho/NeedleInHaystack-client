@@ -30,6 +30,7 @@ function VideoDetailPage() {
         <Video
           video={video}
           playerRef={playerRef}
+          currentVideoTime={currentVideoTime}
           setCurrentVideoTime={setCurrentVideoTime}
         />
         <VideoScript
