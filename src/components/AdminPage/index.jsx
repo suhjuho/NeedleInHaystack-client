@@ -17,9 +17,11 @@ function AdminPage() {
   const [isCorrectUrl, setIsCorrectUrl] = useState(false);
   const [isStopping, setIsStopping] = useState(false);
   const [entryURL, setEntryURL] = useState("");
+  const [maxCrawlPages, setMaxCrawlPages] = useState(1);
   const [crawlingLogList, setCrawlingLogList] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const { setHeaderState } = useHeaderStateStore();
+  const [stopMessage, setStopMessage] = useState("Call Stop");
 
   useEffect(() => {
     setHeaderState("AdminPage");
@@ -34,7 +36,7 @@ function AdminPage() {
         },
       );
 
-      if (!response.data.result) {
+      if (!response.data.result || !response.data.user.isAdmin) {
         navigate("/");
       }
 
@@ -59,6 +61,10 @@ function AdminPage() {
 
       eventSource.onmessage = (event) => {
         const crawlingLog = JSON.parse(event.data);
+
+        if (crawlingLog.result === "ok" && crawlingLog.title === "db") {
+          setStopMessage("ranking videos");
+        }
 
         setIsCrawling(true);
         setCrawlingLogList((crawlingLogList) => [
@@ -90,7 +96,7 @@ function AdminPage() {
     }
 
     setCrawlingLogList([]);
-    setIsCrawling((isCrawling) => !isCrawling);
+    setIsCrawling(true);
     setIsStopping(false);
     setInputMessage("");
 
@@ -99,11 +105,13 @@ function AdminPage() {
       {
         params: {
           entryURL,
+          maxCrawlPages,
         },
       },
     );
 
-    setIsCrawling((isCrawling) => !isCrawling);
+    setIsCrawling(false);
+
     return response.data;
   }
 
@@ -174,12 +182,20 @@ function AdminPage() {
         A crawler scrap video data from youtube web page, Choose your Entry
         point for web scraping.
       </p>
-      <form className="flex justify-start items-center w-full px-10">
+      <form className="flex justify-start items-center w-full px-10 gap-x-2">
         <input
           type="text"
           onChange={handleInputChange}
           className="border border-secondary-border shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl w-full focus:border-blue-500 outline-none"
           placeholder="entry url"
+        />
+        <input
+          type="number"
+          max={10}
+          min={1}
+          className="w-24 border border-secondary-border shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl focus:border-blue-500 outline-none"
+          value={maxCrawlPages}
+          onChange={(ev) => setMaxCrawlPages(ev.target.value)}
         />
         {!isCrawling &&
           (!isCorrectUrl ? (
@@ -208,7 +224,7 @@ function AdminPage() {
       </form>
       {inputMessage && (
         <p
-          className={`w-full px-10 my-2 text-red-500 ${isCorrectUrl ? "text-green-500" : "text-red-500"}`}
+          className={`w-full px-10 my-2 ${isCorrectUrl ? "text-green-500" : "text-red-500"}`}
         >
           {inputMessage}
         </p>
@@ -253,7 +269,7 @@ function AdminPage() {
           <div className="grid gap-4 grid-cols-3 border border-secondary shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl w-full outline-none">
             <div className="flex items-center gap-x-2">
               <LoadingSpin />
-              {isStopping ? "Stopping" : "Scraping"}
+              {isStopping ? stopMessage : "Scraping"}
             </div>
           </div>
         )}
