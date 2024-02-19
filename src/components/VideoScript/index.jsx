@@ -80,7 +80,7 @@ function VideoScript({
 
   return (
     <div
-      className="overflow-y-auto w-[35rem] mr-4 mt-5 ml-10 border-2 border-grey-800 rounded-xl"
+      className="hidden sm:block overflow-y-auto w-[35rem] m-2 border-2 border-grey-800 rounded-xl"
       style={{ height: showTranscript ? playerDimensions.height : "" }}
     >
       <div className="flex items-center justify-between sticky z-10 p-2 top-0 bg-white font-bold text-2xl">
