@@ -30,10 +30,16 @@ const usePlayerDimensions = create((set) => ({
   setPlayerDimensions: (playerDimensions) => set({ playerDimensions }),
 }));
 
+const useAutoCrawlingTimerStore = create((set) => ({
+  autoCrawlingTimer: false,
+  setAutoCrawlingTimer: (autoCrawlingTimer) => set({ autoCrawlingTimer }),
+}));
+
 export {
   useUserInputStore,
   useCheckSpellStore,
   useUserStore,
   useHeaderStateStore,
   usePlayerDimensions,
+  useAutoCrawlingTimerStore,
 };
