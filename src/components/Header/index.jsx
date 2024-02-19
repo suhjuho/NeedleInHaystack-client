@@ -97,8 +97,8 @@ function Header() {
   }
 
   return (
-    <div className="flex py-4 gap-10 lg:gap-20 justify-between items-center sticky top-0 z-10 bg-white ">
-      <div className="flex mr-auto ml-4 gap-4 items-center flex-shrink-0">
+    <div className="flex gap-10 lg:gap-20 justify-between items-center sticky top-0 z-10 bg-white ">
+      <div className="flex mx-4 gap-4 items-center shrink">
         {headerState === "DetailPage" && (
           <button
             className="flex p-3 rounded-full hover:bg-sky-50"
@@ -118,7 +118,9 @@ function Header() {
             <Link to="/">
               <div className="flex items-center justify-center text-center ">
                 <img className="w-6" src="/assets/LogoSample2.png" alt="Logo" />
-                <div className="p-2 text-xl font-bold">Needle In Haystack</div>
+                <div className="p-2 hidden text-xl font-bold">
+                  Needle In Haystack
+                </div>
               </div>
             </Link>
             {headerState !== "AdminPage" && <SearchInput />}
@@ -127,7 +129,7 @@ function Header() {
       </div>
       {!isLoggedIn ? (
         <div
-          className="flex mr-4 ml-auto p-2 items-center flex-shrink-0 border rounded-full hover:bg-sky-50 cursor-pointer"
+          className="hidden sm:flex py-4 my-4 mr-4 ml-auto p-2 items-center border rounded-full hover:bg-sky-50 cursor-pointer"
           onClick={handleLogin}
           role="button"
           tabIndex={0}
@@ -139,9 +141,9 @@ function Header() {
           <p className="px-1">Sign in</p>
         </div>
       ) : (
-        <div className="flex flex-col mr-4 ml-auto items-center flex-shrink-0 cursor-pointer">
+        <div className="flex flex-col mr-4 ml-auto items-center cursor-pointer">
           <div
-            className="flex ml-auto items-center flex-shrink-0 border rounded-full cursor-pointer"
+            className="flex ml-auto items-center border rounded-full cursor-pointer"
             onClick={handleUserIconClick}
             role="button"
             tabIndex={0}

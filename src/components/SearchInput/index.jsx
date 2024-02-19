@@ -194,7 +194,7 @@ function SearchInput() {
         <button
           onClick={handleGlassIconClick}
           aria-label="Search"
-          className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0 flex items-center justify-center bg-secondary hover:bg-secondary-hover"
+          className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 shrink flex items-center justify-center bg-secondary hover:bg-secondary-hover"
         >
           <MagnifyingGlassIcon className="h-6 w-6" />
         </button>

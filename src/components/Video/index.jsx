@@ -124,10 +124,10 @@ function Video({ video, playerRef, currentVideoTime, setCurrentVideoTime }) {
       <div
         id="player-container"
         ref={playerContainerRef}
-        className="relative w-full"
+        className="relative w-full mr-4"
       >
         {isAvailable ? (
-          <div className="absolute mt-4 ml-4 mb-4">
+          <div className="absolute m-2">
             <div className="m-0 p-0" ref={elementRef}>
               <ReactPlayer
                 className="overflow-hidden rounded-xl"
@@ -147,7 +147,7 @@ function Video({ video, playerRef, currentVideoTime, setCurrentVideoTime }) {
             </div>
             <div className="my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
               <button
-                className="px-4 py-1 rounded-lg bg-yellow-300 hover:bg-yellow-400"
+                className="hidden sm:block px-4 py-1 rounded-lg bg-yellow-300 hover:bg-yellow-400"
                 onClick={() => setIsCapturing((prev) => !prev)}
               >
                 Extract Code
