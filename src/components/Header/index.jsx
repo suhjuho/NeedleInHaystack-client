@@ -98,7 +98,7 @@ function Header() {
 
   return (
     <div className="flex gap-10 lg:gap-20 justify-between items-center sticky top-0 z-10 bg-white ">
-      <div className="flex ml-4 mr-4 gap-4 items-center shrink">
+      <div className="flex mx-4 gap-4 items-center shrink">
         {headerState === "DetailPage" && (
           <button
             className="flex p-3 rounded-full hover:bg-sky-50"
@@ -117,12 +117,8 @@ function Header() {
           <>
             <Link to="/">
               <div className="flex items-center justify-center text-center ">
-                <img
-                  className="w-6 sm:block"
-                  src="/assets/LogoSample2.png"
-                  alt="Logo"
-                />
-                <div className="p-2 hidden sm:block text-xl font-bold">
+                <img className="w-6" src="/assets/LogoSample2.png" alt="Logo" />
+                <div className="p-2 hidden text-xl font-bold">
                   Needle In Haystack
                 </div>
               </div>
