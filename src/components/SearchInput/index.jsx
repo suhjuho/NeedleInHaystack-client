@@ -177,12 +177,12 @@ function SearchInput() {
   }
 
   return (
-    <div className="relative flex flex-col gap-4 flex-grow max-w-[600px] items-center justify-center">
+    <div className="relative flex flex-col justify-center items-center gap-4 flex-grow max-w-[400px] sm:max-w-[600px]">
       <div className="flex flex-grow w-full">
         <input
           type="search"
           placeholder="Search Needle"
-          className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-xl w-full focus:border-blue-500 outline-none"
+          className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary bg-white py-2 px-4 text-xl w-full focus:border-green-300 outline-none"
           value={userInput}
           onChange={handleUserInputChange}
           onKeyDown={handleKeyPress}
