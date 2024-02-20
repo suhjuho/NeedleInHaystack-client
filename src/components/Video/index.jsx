@@ -67,9 +67,6 @@ function Video({
       videoTop.current = rect.top;
       videoRight.current = Math.floor(rect.right);
       videoBottom.current = Math.floor(rect.bottom);
-
-      console.log(videoLeft.current);
-      console.log(videoTop.current);
     }
 
     getVideoSize();
@@ -129,7 +126,7 @@ function Video({
     setIsCapturing((prev) => !prev);
   }
 
-  async function handleEditorDidMount(editor) {
+  async function handleEditorMount(editor) {
     editorRef.current = editor;
 
     setTimeout(() => {
@@ -143,6 +140,7 @@ function Video({
 
   async function handleOptionChange(event) {
     setLanguage(() => event.target.value);
+
     setTimeout(() => {
       editorRef.current.getAction("editor.action.formatDocument").run();
     }, 100);
@@ -211,7 +209,7 @@ function Video({
                   language={language}
                   theme="vs-dark"
                   value={extractedCode}
-                  onMount={handleEditorDidMount}
+                  onMount={handleEditorMount}
                   onChange={handleEditorChange}
                   options={{
                     tabSize: 2,
