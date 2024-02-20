@@ -177,7 +177,7 @@ function SearchInput() {
   }
 
   return (
-    <div className="relative flex flex-col justify-center items-center gap-4 flex-grow max-w-[400px] sm:max-w-[600px]">
+    <div className="relative flex flex-col justify-center items-center gap-4 flex-grow max-w-[380px] sm:max-w-[600px]">
       <div className="flex flex-grow w-full">
         <input
           type="search"

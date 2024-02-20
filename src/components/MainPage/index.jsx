@@ -26,7 +26,7 @@ function MainPage() {
           <div className="text-4xl font-bold z-10">Needle In Haystack</div>
         </div>
       </Link>
-      <p className="mb-12 text-secondary-text text-center font-semibold">
+      <p className="hidden sm:block mb-12 text-secondary-text text-center font-semibold">
         Search the video using Haystack!
       </p>
       <div className="flex justify-center items-center">
