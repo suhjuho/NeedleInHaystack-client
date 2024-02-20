@@ -194,8 +194,8 @@ function SearchInput() {
 
   function handleDeleteClick(event) {
     event.stopPropagation();
-    const itemToDelete = autoCompletions[selectedItemIndex];
-    const index = autoCompletions.indexOf(itemToDelete);
+    const historyToDelete = autoCompletions[selectedItemIndex];
+    const index = autoCompletions.indexOf(historyToDelete);
 
     setAutoCompletions((prev) => {
       const newArray = [...prev];
@@ -205,12 +205,12 @@ function SearchInput() {
       return newArray;
     });
 
-    async function deleteAutoCompletions(itemToDelete) {
+    async function deleteAutoCompletions(historyToDelete) {
       try {
         await axios.delete(
           `${import.meta.env.VITE_BASE_URL}/auto-completions`,
           {
-            params: { itemToDelete },
+            params: { historyToDelete },
             withCredentials: true,
           },
         );
@@ -219,7 +219,7 @@ function SearchInput() {
       }
     }
 
-    deleteAutoCompletions();
+    deleteAutoCompletions(historyToDelete);
     setSelectedItemIndex((prev) => prev + 1);
   }
 
