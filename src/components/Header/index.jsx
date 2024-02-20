@@ -98,7 +98,7 @@ function Header() {
   }
 
   return (
-    <div className="flex justify-center sm:justify-between items-center w-full shrink sticky top-0 gap-4 lg:gap-8 my-8 px-4 z-10 bg-white ">
+    <div className="flex justify-center sm:justify-between items-center w-screen shrink sticky top-0 gap-4 lg:gap-8 my-8 px-4 py-2 z-10 bg-white ">
       <div className="flex items-center">
         {headerState === "DetailPage" && (
           <button

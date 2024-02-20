@@ -71,7 +71,7 @@ function ResultPage() {
                 </span>
               </p>
             )}
-            <div className="ml-2 mr-auto font-medium text-sm text-gray-500">
+            <div className="mb-2 ml-2 mr-auto font-medium text-sm text-gray-500">
               About {data.pages[0].totalVideosCount} results (
               {data.pages[0].videosFetchTime} seconds)
             </div>
@@ -108,7 +108,7 @@ function ResultPage() {
                 <p className="mb-10 text-4xl">
                   Did you mean
                   <span
-                    className="font-bold italic ml-2 hover:text-purple-900 hover:underline"
+                    className="ml-2 font-bold italic hover:text-purple-900 hover:underline"
                     onClick={handleSearchInsteadClick}
                     role="button"
                     tabIndex={0}
@@ -120,13 +120,13 @@ function ResultPage() {
               )}
               <p className="mb-10">
                 Your search -
-                <span className="font-bold ml-2 mr-2">
+                <span className="ml-2 mr-2 font-bold">
                   {data?.pages[0].query}
                 </span>
                 did not match any documents.
               </p>
               <div className="text-xl font-bold">No results found</div>
-              <p className="font-bold mt-5">
+              <p className="mt-5 font-bold">
                 Try different keywords or remove search filters
               </p>
             </div>

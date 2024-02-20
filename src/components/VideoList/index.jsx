@@ -29,7 +29,7 @@ function VideoList({ innerRef, youtubeVideoId }) {
         <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
           <div
             ref={innerRef}
-            className="flex justify-between w-screen gap-x-6 p-2"
+            className="flex justify-center sm:justify-between w-screen gap-x-6 sm:p-2"
           >
             <div className="flex flex-col sm:flex-row min-w-0 gap-x-4">
               {isAvailable ? (
@@ -43,8 +43,8 @@ function VideoList({ innerRef, youtubeVideoId }) {
                       borderColor: "rgb(100 116 139)",
                       backgroundColor: "rgb(249 250 251)",
                     }}
-                    width={355}
-                    height={200}
+                    width={400}
+                    height={225}
                     url={CONSTANT.YOUTUBE_URL + youtubeVideoId}
                     playing={isHover}
                     onError={() => {
@@ -54,14 +54,14 @@ function VideoList({ innerRef, youtubeVideoId }) {
                 </div>
               ) : (
                 <img
-                  className="h-[200px] flex-none rounded-md bg-gray-50"
+                  className="h-[225px] flex-none rounded-md bg-gray-50"
                   src={video.thumbnailURL}
                   alt="thumbnail"
                 />
               )}
 
               <div className="min-w-0 flex-auto">
-                <p className="text-lg pt-2 pb-4 font-semibold leading-6 text-gray-900">
+                <p className="text-lg w-[355px] sm:w-full pt-2 pb-4 font-semibold leading-6 text-gray-900">
                   {video.title}
                 </p>
                 <p className="hidden sm:block mt-1 truncate text-sm leading-5 text-gray-600">
