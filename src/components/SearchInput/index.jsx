@@ -176,6 +176,16 @@ function SearchInput() {
     navigate(`/results?search_query=${keywords}`);
   }
 
+  function handleOptionClick(event) {
+    const selectedKeyword = autoCompletions[selectedItemIndex];
+    const keywords = selectedKeyword.replace(/\s+/g, " ").split(" ").join("+");
+
+    setUserInput(event.target.textContent);
+    setShowAutoCompletions(false);
+
+    navigate(`/results?search_query=${keywords}`);
+  }
+
   return (
     <div className="relative flex flex-col gap-4 flex-grow max-w-[600px] items-center justify-center">
       <div className="flex flex-grow w-full">
@@ -210,7 +220,9 @@ function SearchInput() {
               className={`flex items-center w-full h-10 py-2 text-xl rounded-md ${Number(index) === selectedItemIndex ? "bg-secondary-hover" : ""}`}
               onMouseEnter={handleMouseHover}
               onMouseLeave={handleMouseHover}
+              onClick={handleOptionClick}
               index={index}
+              role="presentation"
             >
               {isLoggedIn ? (
                 <ClockIcon className="h-6 mx-2" />
