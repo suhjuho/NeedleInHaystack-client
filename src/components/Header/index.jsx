@@ -5,6 +5,7 @@ import {
   UserCircleIcon,
   ArrowUturnLeftIcon,
   ArrowRightStartOnRectangleIcon,
+  ChevronLeftIcon,
 } from "@heroicons/react/24/solid";
 
 import axios from "axios";
@@ -97,27 +98,28 @@ function Header() {
   }
 
   return (
-    <div className="flex gap-10 lg:gap-20 justify-between items-center sticky top-0 z-10 bg-white ">
-      <div className="flex mx-4 gap-4 items-center shrink">
+    <div className="flex justify-center sm:justify-between items-center w-screen shrink sticky top-0 gap-4 lg:gap-8 my-8 px-4 py-2 z-10 bg-white ">
+      <div className="flex items-center">
         {headerState === "DetailPage" && (
           <button
-            className="flex p-3 rounded-full hover:bg-sky-50"
+            className="flex rounded-full hover:bg-sky-50"
             type="button"
             onClick={() => {
               navigate(-1);
             }}
           >
-            <ArrowUturnLeftIcon
-              className="h-[25px] justify-center items-center"
-              alt="Back"
-            />
+            <ChevronLeftIcon className="w-6" alt="Back" />
           </button>
         )}
         {headerState !== "MainPage" && (
           <>
             <Link to="/">
               <div className="flex items-center justify-center text-center ">
-                <img className="w-6" src="/assets/LogoSample2.png" alt="Logo" />
+                <img
+                  className="w-6 mx-2"
+                  src="/assets/LogoSample2.png"
+                  alt="Logo"
+                />
                 <div className="p-2 hidden text-xl font-bold">
                   Needle In Haystack
                 </div>
@@ -129,13 +131,13 @@ function Header() {
       </div>
       {!isLoggedIn ? (
         <div
-          className="hidden sm:flex py-4 my-4 mr-4 ml-auto p-2 items-center border rounded-full hover:bg-sky-50 cursor-pointer"
+          className="hidden sm:flex mr-4 ml-auto p-2 items-center border rounded-full hover:bg-sky-50 cursor-pointer"
           onClick={handleLogin}
           role="button"
           tabIndex={0}
         >
           <UserCircleIcon
-            className="h-[35px] items-center fill-blue-300"
+            className="w-6 items-center fill-blue-300"
             alt="signIn"
           />
           <p className="px-1">Sign in</p>
