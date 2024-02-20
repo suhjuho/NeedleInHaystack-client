@@ -17,7 +17,9 @@ function VideoDetailPage() {
   const { autoCrawlingTimer, setAutoCrawlingTimer } =
     useAutoCrawlingTimerStore();
   const [currentVideoTime, setCurrentVideoTime] = useState(0);
+  const [isCapturing, setIsCapturing] = useState(false);
   const playerRef = useRef(null);
+  const keysPressedRef = useRef({});
 
   useEffect(() => {
     setHeaderState("DetailPage");
@@ -42,11 +44,37 @@ function VideoDetailPage() {
     }
   }, []);
 
+  function handleCaptureClick() {
+    setIsCapturing((prev) => !prev);
+  }
+
+  function handleKeyDown(event) {
+    keysPressedRef.current[event.key] = true;
+
+    if (keysPressedRef.current.z && keysPressedRef.current.x) {
+      handleCaptureClick();
+    }
+  }
+
+  function handleKeyUp() {
+    keysPressedRef.current = {};
+  }
+
   function handleSeekToTime(seconds) {
     if (playerRef.current) {
       playerRef.current.seekTo(seconds, "fractions", "play");
     }
   }
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keypress", handleKeyUp);
+    };
+  }, []);
 
   return (
     <>
@@ -57,6 +85,9 @@ function VideoDetailPage() {
           playerRef={playerRef}
           currentVideoTime={currentVideoTime}
           setCurrentVideoTime={setCurrentVideoTime}
+          isCapturing={isCapturing}
+          setIsCapturing={setIsCapturing}
+          handleCaptureClick={handleCaptureClick}
         />
         <VideoScript
           currentVideoTime={currentVideoTime}
