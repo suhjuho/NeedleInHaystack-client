@@ -57,7 +57,7 @@ function ResultPage() {
             {data.pages[0].query !== data.pages[0].correctedInput && (
               <p className="mt-3 mb-3">
                 Showing results for
-                <span className="font-bold italic ml-2 mr-2" role="button">
+                <span className="ml-2 mr-2 font-bold italic" role="button">
                   {data.pages[0].correctedInput}
                 </span>
                 Search instead for
@@ -96,7 +96,6 @@ function ResultPage() {
               }),
             )}
             {isFetchingNextPage && <LoadingSpin />}
-            <div>{!hasNextPage ? "Nothing more to load" : "more..."}</div>
           </>
         ) : (
           <>
