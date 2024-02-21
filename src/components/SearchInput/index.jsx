@@ -18,7 +18,7 @@ function SearchInput() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const [showAutoCompletions, setShowAutoCompletions] = useState(false);
   const [showSearchHistory, setShowSearchHistory] = useState(false);
-  const [referenceIndex, setReferenceIndex] = useState(0);
+  const [referenceIndex, setReferenceIndex] = useState(10);
 
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -254,7 +254,9 @@ function SearchInput() {
           {autoCompletions.map((autoCompletion, index) => (
             <div
               key={autoCompletion}
-              className={`flex items-center w-full py-3 text-xl rounded-md ${Number(index) === selectedItemIndex ? "bg-secondary-hover" : ""} ${index < referenceIndex || userInput === "" ? "text-violet-600" : ""}`}
+              className={`flex items-center w-full py-3 text-xl rounded-md ${Number(index) === selectedItemIndex ? "bg-secondary-hover" : ""}
+              ${index < referenceIndex ? "text-violet-600" : "text-black"}
+              `}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onClick={handleOptionClick}
