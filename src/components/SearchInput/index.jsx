@@ -18,6 +18,7 @@ function SearchInput() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const [showAutoCompletions, setShowAutoCompletions] = useState(false);
   const [showSearchHistory, setShowSearchHistory] = useState(false);
+  const [referenceIndex, setReferenceIndex] = useState(10);
 
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -51,6 +52,7 @@ function SearchInput() {
         const { data } = response;
 
         setAutoCompletions(data.searchHistories);
+        setReferenceIndex(data.referenceIndex);
       } catch (error) {
         console.error(error);
       }
@@ -139,17 +141,21 @@ function SearchInput() {
     }
   }
 
-  function handleMouseHover(event) {
+  function handleMouseEnter(event) {
     const index = Number(event.target.getAttribute("index"));
 
     setSelectedItemIndex(index);
   }
 
-  function handleAutoCompletionClick(event) {
+  function handleMouseLeave() {
+    setSelectedItemIndex(-1);
+  }
+
+  function handleAutoCompletionClick() {
     const selectedKeyword = autoCompletions[selectedItemIndex];
     const keywords = selectedKeyword.replace(/\s+/g, " ").split(" ").join("+");
 
-    setUserInput(event.target.textContent);
+    setUserInput(selectedKeyword);
     setShowAutoCompletions(false);
 
     navigate(`/results?search_query=${keywords}`);
@@ -186,13 +192,44 @@ function SearchInput() {
     navigate(`/results?search_query=${keywords}`);
   }
 
+  function handleDeleteClick(event) {
+    event.stopPropagation();
+    const historyToDelete = autoCompletions[selectedItemIndex];
+    const index = autoCompletions.indexOf(historyToDelete);
+
+    setAutoCompletions((prev) => {
+      const newArray = [...prev];
+
+      newArray.splice(index, 1);
+
+      return newArray;
+    });
+
+    async function deleteAutoCompletions(historyToDelete) {
+      try {
+        await axios.delete(
+          `${import.meta.env.VITE_BASE_URL}/auto-completions`,
+          {
+            params: { historyToDelete },
+            withCredentials: true,
+          },
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    deleteAutoCompletions(historyToDelete);
+    setSelectedItemIndex((prev) => prev + 1);
+  }
+
   return (
-    <div className="relative flex flex-col justify-center items-center gap-4 flex-grow max-w-[380px] sm:max-w-[600px]">
+    <div className="relative flex flex-col gap-4 flex-grow max-w-[600px] items-center justify-center">
       <div className="flex flex-grow w-full">
         <input
           type="search"
           placeholder="Search Needle"
-          className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary bg-white py-2 px-4 text-xl w-full focus:border-green-300 outline-none"
+          className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-xl w-full focus:border-blue-500 outline-none"
           value={userInput}
           onChange={handleUserInputChange}
           onKeyDown={handleKeyPress}
@@ -217,19 +254,28 @@ function SearchInput() {
           {autoCompletions.map((autoCompletion, index) => (
             <div
               key={autoCompletion}
-              className={`flex items-center w-full h-10 py-2 text-xl rounded-md ${Number(index) === selectedItemIndex ? "bg-secondary-hover" : ""}`}
-              onMouseEnter={handleMouseHover}
-              onMouseLeave={handleMouseHover}
+              className={`flex items-center w-full py-3 text-xl rounded-md ${Number(index) === selectedItemIndex ? "bg-secondary-hover" : ""}
+              ${index < referenceIndex ? "text-violet-600" : "text-black"}
+              `}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               onClick={handleOptionClick}
               index={index}
               role="presentation"
             >
-              {isLoggedIn ? (
+              {isLoggedIn && index < referenceIndex ? (
                 <ClockIcon className="h-6 mx-2" />
               ) : (
                 <MagnifyingGlassIcon className="h-6 mx-2" />
               )}
               {autoCompletion}
+              <span
+                className={`${(index < referenceIndex || userInput === "") && index === selectedItemIndex ? "block" : "hidden"} ml-auto mr-4 text-gray-500 hover:underline`}
+                onClick={handleDeleteClick}
+                role="presentation"
+              >
+                delete
+              </span>
             </div>
           ))}
         </button>

@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   BugAntIcon,
   UserCircleIcon,
-  ArrowUturnLeftIcon,
   ArrowRightStartOnRectangleIcon,
   ChevronLeftIcon,
 } from "@heroicons/react/24/solid";
@@ -12,7 +11,11 @@ import axios from "axios";
 
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
-import { useUserStore, useHeaderStateStore } from "../../store/store";
+import {
+  useUserStore,
+  useHeaderStateStore,
+  useUserInputStore,
+} from "../../store/store";
 
 import SearchInput from "../SearchInput";
 
@@ -20,6 +23,7 @@ function Header() {
   const navigate = useNavigate();
   const { user, setUser, isLoggedIn, setIsLoggedIn } = useUserStore();
   const { headerState } = useHeaderStateStore();
+  const { setUserInput } = useUserInputStore();
   const [isUserIconClicked, setUserIconClicked] = useState(false);
 
   useEffect(() => {
@@ -97,6 +101,10 @@ function Header() {
     }
   }
 
+  function handleLogoClick() {
+    setUserInput("");
+  }
+
   return (
     <div className="flex justify-center sm:justify-between items-center w-screen shrink sticky top-0 gap-4 lg:gap-8 my-8 px-4 py-2 z-10 bg-white ">
       <div className="flex items-center">
@@ -119,6 +127,9 @@ function Header() {
                   className="w-6 mx-2"
                   src="/assets/LogoSample2.png"
                   alt="Logo"
+                  onClick={handleLogoClick}
+                  role="button"
+                  tabIndex={0}
                 />
                 <div className="p-2 hidden text-xl font-bold">
                   Needle In Haystack
