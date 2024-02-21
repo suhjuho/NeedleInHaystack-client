@@ -148,20 +148,20 @@ function AdminPage() {
     return response.data;
   }
 
-  const handleStartCrawling = async (ev) => {
-    ev.preventDefault();
+  const handleStartCrawling = async (event) => {
+    event.preventDefault();
 
     await startCrawling(entryURL);
   };
 
-  const handleStopCrawling = async (ev) => {
-    ev.preventDefault();
+  const handleStopCrawling = async (event) => {
+    event.preventDefault();
 
     await stopCrawling(entryURL);
   };
 
-  const handleCheckUrl = async (ev) => {
-    ev.preventDefault();
+  const handleCheckUrl = async (event) => {
+    event.preventDefault();
 
     await verifyYoutubeUrl();
   };
@@ -172,43 +172,96 @@ function AdminPage() {
     setEntryURL(event.target.value);
   }
 
+  async function setPageRank() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/admin/pageRanking/`,
+    );
+
+    setCrawlingLogList((crawlingLogList) => [
+      ...crawlingLogList,
+      {
+        result: response.data.result,
+        message: response.data.message,
+        title: "calculated all videos page rank",
+      },
+    ]);
+
+    return response.data;
+  }
+
+  async function combineScores() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/admin/combineAllScores/`,
+    );
+
+    setCrawlingLogList((crawlingLogList) => [
+      ...crawlingLogList,
+      {
+        result: response.data.result,
+        message: response.data.message,
+        title: "combined all scores",
+      },
+    ]);
+
+    return response.data;
+  }
+
+  const handlePageRankClick = async () => {
+    setIsCrawling(true);
+
+    await setPageRank();
+    await combineScores();
+
+    setIsCrawling(false);
+  };
+
   return (
     <div className="flex flex-col">
       <Header />
-      <h1 className="w-full px-10 text-4xl font-semibold text-left">
-        Web Crawler
-      </h1>
-      <p className="w-full px-10 my-2 text-secondary-text">
-        A crawler scrap video data from youtube web page, Choose your Entry
-        point for web scraping.
-      </p>
+      <div className="flex w-full pr-10">
+        <div>
+          <h1 className="w-full px-10 text-4xl font-semibold text-left">
+            Web Crawler
+          </h1>
+          <p className="w-full px-10 my-2 text-secondary-text">
+            A crawler scrap video data from youtube web page, Choose your Entry
+            point for web scraping.
+          </p>
+        </div>
+        <button
+          onClick={handlePageRankClick}
+          className="h-12 px-4 m-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-green-300 hover:bg-green-500"
+        >
+          Add page rank
+        </button>
+      </div>
       <form className="flex justify-start items-center w-full px-10 gap-x-2">
         <input
           type="text"
           onChange={handleInputChange}
-          className="border border-secondary-border shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl w-full focus:border-blue-500 outline-none"
+          className="border border-secondary-border shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl w-full focus:border-green-500 outline-none"
           placeholder="entry url"
         />
         <input
           type="number"
           max={10}
           min={1}
-          className="w-24 border border-secondary-border shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl focus:border-blue-500 outline-none"
+          className="w-24 border border-secondary-border shadow-inner shadow-secondary rounded-lg py-2 px-4 text-xl focus:border-green-500 outline-none"
           value={maxCrawlPages}
-          onChange={(ev) => setMaxCrawlPages(ev.target.value)}
+          onChange={(event) => setMaxCrawlPages(event.target.value)}
         />
         {!isCrawling &&
           (!isCorrectUrl ? (
             <button
               onClick={handleCheckUrl}
-              className="w-32 py-2 px-4 mx-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-orange-100"
+              className="w-32 py-2 px-4 mx-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-orange-100 hover:bg-orange-300"
             >
               check
             </button>
           ) : (
             <button
               onClick={handleStartCrawling}
-              className="w-32 py-2 px-4 mx-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-blue-100"
+              className="w-32 py-2 px-4 mx-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-blue-100 hover:bg-blue-300"
             >
               start
             </button>
@@ -216,7 +269,7 @@ function AdminPage() {
         {isCrawling && (
           <button
             onClick={handleStopCrawling}
-            className="w-32 py-2 px-4 mx-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-red-100"
+            className="w-32 py-2 px-4 mx-2 rounded-lg text-xl flex-shrink-0 flex items-center justify-center bg-red-100 hover:bg-red-300"
           >
             stop
           </button>

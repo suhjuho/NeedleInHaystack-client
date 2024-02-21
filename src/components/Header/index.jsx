@@ -131,7 +131,7 @@ function Header() {
                   role="button"
                   tabIndex={0}
                 />
-                <div className="p-2 hidden text-xl font-bold">
+                <div className="p-2 hidden sm:block text-xl font-bold">
                   Needle In Haystack
                 </div>
               </div>
