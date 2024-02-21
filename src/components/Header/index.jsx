@@ -128,7 +128,8 @@ function Header() {
                   src="/assets/LogoSample2.png"
                   alt="Logo"
                   onClick={handleLogoClick}
-                  role="presentation"
+                  role="button"
+                  tabIndex={0}
                 />
                 <div className="p-2 hidden text-xl font-bold">
                   Needle In Haystack
