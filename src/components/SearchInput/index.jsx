@@ -270,7 +270,7 @@ function SearchInput() {
               )}
               {autoCompletion}
               <span
-                className={`${(index < referenceIndex || userInput === "") && index === selectedItemIndex ? "block" : "hidden"} text-gray-500 ml-auto mr-4 hover:underline`}
+                className={`${(index < referenceIndex || userInput === "") && index === selectedItemIndex ? "block" : "hidden"} ml-auto mr-4 text-gray-500 hover:underline`}
                 onClick={handleDeleteClick}
                 role="presentation"
               >
