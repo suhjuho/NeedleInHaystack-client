@@ -153,7 +153,7 @@ function VideoDetailPage() {
           />
         ) : (
           <div
-            className="hidden lg:block w-[35rem] m-2 border-2 rounded-xl"
+            className="hidden lg:block w-[45rem] m-2 border-2 rounded-xl"
             style={{
               height: `${parseInt(playerDimensions.height, 10) - 48}px `,
             }}

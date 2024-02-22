@@ -131,7 +131,7 @@ function Header() {
                   role="button"
                   tabIndex={0}
                 />
-                <div className="p-2 hidden sm:block text-xl font-bold">
+                <div className="p-2 hidden md:block text-xl font-bold">
                   Needle In Haystack
                 </div>
               </div>
@@ -151,7 +151,7 @@ function Header() {
             className="w-6 items-center fill-blue-300"
             alt="signIn"
           />
-          <p className="px-1">Sign in</p>
+          <p className="text-xl px-1">Sign in</p>
         </div>
       ) : (
         <div className="flex flex-col mr-4 ml-auto items-center cursor-pointer">
@@ -162,7 +162,7 @@ function Header() {
             tabIndex={0}
           >
             <img
-              className="h-[51px] rounded-full"
+              className="h-12 w-12 rounded-full"
               src={user?.photoURL}
               alt="signIn"
             />
@@ -171,7 +171,7 @@ function Header() {
             <div className="absolute top-20 right-3 flex flex-col rounded-md border-b shadow-md bg-white">
               <div className="flex">
                 <img
-                  className="h-[50px] justify-center items-center rounded-full m-3"
+                  className="h-12 w-12 justify-center items-center rounded-full m-3"
                   src={user?.photoURL}
                   alt="signIn"
                 />

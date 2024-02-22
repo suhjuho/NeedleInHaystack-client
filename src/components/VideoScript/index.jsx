@@ -82,7 +82,7 @@ function VideoScript({
 
   return (
     <div
-      className="hidden lg:block overflow-y-auto w-[35rem] max-h-[820px] m-2 border-2 border-grey-800 rounded-xl"
+      className="hidden lg:block overflow-y-auto w-[45rem] max-h-[820px] m-2 border-2 border-grey-800 rounded-xl"
       style={{ height: showTranscript ? playerDimensions.height : "" }}
     >
       <div className="flex items-center justify-between sticky p-2 top-0 bg-white font-bold text-2xl">

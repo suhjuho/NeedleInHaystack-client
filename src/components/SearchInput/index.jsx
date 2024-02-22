@@ -229,7 +229,7 @@ function SearchInput() {
         <input
           type="search"
           placeholder="Search Needle"
-          className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-xl w-full focus:border-blue-500 outline-none"
+          className="rounded-l-full bg-white border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-2xl w-full focus:border-main outline-none"
           value={userInput}
           onChange={handleUserInputChange}
           onKeyDown={handleKeyPress}
