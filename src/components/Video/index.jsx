@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelectionContainer } from "@air/react-drag-to-select";
 import ReactPlayer from "react-player/youtube";
-import Editor from "@monaco-editor/react";
 
 import axios from "axios";
 import CONSTANT from "../../constants/constant";
 import { usePlayerDimensions } from "../../store/store";
-import { Loading } from "../shared/Loading";
 
 function Video({
   video,
@@ -16,12 +14,13 @@ function Video({
   isCapturing,
   setIsCapturing,
   handleCaptureClick,
+  setIsLoading,
+  setExtractedCode,
+  setIsScriptShown,
 }) {
   const [isAvailable, setIsAvailable] = useState(true);
   const [showMore, setShowMore] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [extractedCode, setExtractedCode] = useState(null);
-  const [language, setLanguage] = useState("");
+  const [isHover, setIsHover] = useState(false);
   const { playerDimensions, setPlayerDimensions } = usePlayerDimensions();
 
   const videoLeft = useRef(0);
@@ -36,7 +35,6 @@ function Video({
 
   const playerContainerRef = useRef();
   const elementRef = useRef(null);
-  const editorRef = useRef();
 
   const { DragSelection } = useSelectionContainer();
 
@@ -124,31 +122,13 @@ function Video({
 
     setExtractedCode(response.data.extractedCode);
     setIsCapturing((prev) => !prev);
-  }
+    setIsScriptShown(() => false);
 
-  async function handleEditorMount(editor) {
-    editorRef.current = editor;
-
-    setTimeout(() => {
-      editorRef.current.getAction("editor.action.formatDocument").run();
-    }, 100);
-  }
-
-  async function handleEditorChange(value) {
-    await navigator.clipboard.writeText(value);
-  }
-
-  async function handleOptionChange(event) {
-    setLanguage(() => event.target.value);
-
-    setTimeout(() => {
-      editorRef.current.getAction("editor.action.formatDocument").run();
-    }, 100);
+    await navigator.clipboard.writeText(response.data.extractedCode);
   }
 
   return (
     <>
-      {isLoading && <Loading />}
       <div
         id="player-container"
         ref={playerContainerRef}
@@ -175,10 +155,12 @@ function Video({
             </div>
             <div className="my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
               <button
-                className="hidden sm:block px-4 py-1 rounded-lg bg-yellow-300 hover:bg-yellow-400"
+                className="hidden sm:block px-4 py-1 rounded-lg bg-green-300 hover:bg-green-400"
                 onClick={handleCaptureClick}
+                onMouseEnter={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
               >
-                Extract Code
+                {isHover ? "Try 'zx' Hotkey" : "Extract Code"}
               </button>
               <div className="mb-3 font-bold text-xl">{video.title}</div>
               <div className="mb-3 font-bold">{video.channel}</div>
@@ -200,45 +182,6 @@ function Video({
                 </button>
               )}
             </div>
-            {extractedCode && (
-              <div className="flex">
-                <Editor
-                  height="200px"
-                  width="500px"
-                  defaultLanguage="javascript"
-                  language={language}
-                  theme="vs-dark"
-                  value={extractedCode}
-                  onMount={handleEditorMount}
-                  onChange={handleEditorChange}
-                  options={{
-                    tabSize: 2,
-                    fontSize: "16px",
-                    renderValidationDecorations: "off",
-                    autoClosingBrackets: true,
-                    formatOnPaste: true,
-                    autoIndent: "full",
-                    minimap: { enabled: false },
-                  }}
-                />
-                <span className="w-max ml-2">Language selected : </span>
-                <select
-                  className="w-max h-max ml-2 border-2"
-                  aria-label="language"
-                  onChange={handleOptionChange}
-                >
-                  {CONSTANT.LANGUAGE_OPTIONS.map((language) => (
-                    <option
-                      key={language}
-                      value={language}
-                      defaultValue={language === "javascript"}
-                    >
-                      {language}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
           </div>
         ) : (
           <>
@@ -263,8 +206,10 @@ function Video({
       </div>
       {isCapturing && (
         <div
-          className="absolute top-[109px] left-[8px] opacity-40 bg-slate-200"
+          className="absolute opacity-40 bg-slate-200"
           style={{
+            top: videoTop.current,
+            left: videoLeft.current,
             width: parseInt(playerDimensions.width, 10),
             height: parseInt(playerDimensions.height, 10),
           }}
