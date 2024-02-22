@@ -82,6 +82,7 @@ function Video({
   async function handleMouseUp(event) {
     setIsLoading(true);
     setExtractedCode(() => null);
+    setIsScriptShown(() => false);
 
     captureEndX.current = event.clientX - videoLeft.current;
     captureEndY.current = event.clientY - videoTop.current;
@@ -122,7 +123,6 @@ function Video({
 
     setExtractedCode(response.data.extractedCode);
     setIsCapturing((prev) => !prev);
-    setIsScriptShown(() => false);
 
     await navigator.clipboard.writeText(response.data.extractedCode);
   }
@@ -132,11 +132,11 @@ function Video({
       <div
         id="player-container"
         ref={playerContainerRef}
-        className="relative w-full mr-4"
+        className="relative w-full max-w-screen-lg mr-4"
       >
         {isAvailable ? (
           <div className="absolute m-2">
-            <div className="m-0 p-0" ref={elementRef}>
+            <div ref={elementRef}>
               <ReactPlayer
                 className="overflow-hidden rounded-xl"
                 ref={playerRef}
@@ -153,9 +153,9 @@ function Video({
                 height={playerDimensions.height}
               />
             </div>
-            <div className="my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
+            <div className="relative my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
               <button
-                className="hidden sm:block px-4 py-1 rounded-lg bg-green-300 hover:bg-green-400"
+                className="absolute right-2 hidden lg:block px-4 py-1 rounded-lg bg-main hover:bg-green-300"
                 onClick={handleCaptureClick}
                 onMouseEnter={() => setIsHover(true)}
                 onMouseLeave={() => setIsHover(false)}
