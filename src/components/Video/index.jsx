@@ -12,6 +12,7 @@ function Video({
   currentVideoTime,
   setCurrentVideoTime,
   isCapturing,
+  isLoading,
   setIsCapturing,
   handleCaptureClick,
   setIsLoading,
@@ -162,7 +163,9 @@ function Video({
               >
                 {isHover ? "Try 'zx' Hotkey" : "Extract Code"}
               </button>
-              <div className="mb-3 font-bold text-xl">{video.title}</div>
+              <div className="mr-[140px] mb-3 font-bold text-xl">
+                {video.title}
+              </div>
               <div className="mb-3 font-bold">{video.channel}</div>
               {video.description.length <= 100 ? (
                 <div>{video.description}</div>
@@ -205,21 +208,36 @@ function Video({
         )}
       </div>
       {isCapturing && (
-        <div
-          className="absolute opacity-40 bg-slate-200"
-          style={{
-            top: videoTop.current,
-            left: videoLeft.current,
-            width: parseInt(playerDimensions.width, 10),
-            height: parseInt(playerDimensions.height, 10),
-          }}
-          role="none"
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-          {" "}
-          <DragSelection />
-        </div>
+        <>
+          <div
+            className="absolute opacity-40 bg-slate-200"
+            style={{
+              top: videoTop.current,
+              left: videoLeft.current,
+              width: parseInt(playerDimensions.width, 10),
+              height: parseInt(playerDimensions.height, 10),
+            }}
+            role="none"
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+          >
+            {" "}
+            <DragSelection />
+          </div>
+          {isLoading && (
+            <div
+              style={{
+                top: videoTop.current,
+                left: videoLeft.current,
+                width: parseInt(playerDimensions.width, 10),
+                height: parseInt(playerDimensions.height, 10),
+              }}
+              className="absolute"
+            >
+              <div className="absolute w-full h-1 rounded bg-gradient-to-r from-lime-300 from-10% via-green-400 via-70% to-emerald-300 to-90% brightness-100 animate-scan"></div>
+            </div>
+          )}
+        </>
       )}
     </>
   );
