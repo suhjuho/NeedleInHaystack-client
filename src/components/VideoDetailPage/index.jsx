@@ -42,28 +42,28 @@ function VideoDetailPage() {
       }, 0);
   }, [isCapturing]);
 
-  // useEffect(() => {
-  //   setHeaderState("DetailPage");
+  useEffect(() => {
+    setHeaderState("DetailPage");
 
-  //   async function autoCrawling(videoId) {
-  //     setAutoCrawlingTimer(true);
+    async function autoCrawling(videoId) {
+      setAutoCrawlingTimer(true);
 
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BASE_URL}/admin/autoCrawling`,
-  //       {
-  //         videoId,
-  //       },
-  //     );
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/admin/autoCrawling`,
+        {
+          videoId,
+        },
+      );
 
-  //     setAutoCrawlingTimer(false);
+      setAutoCrawlingTimer(false);
 
-  //     return response.data;
-  //   }
+      return response.data;
+    }
 
-  //   if (!autoCrawlingTimer) {
-  //     autoCrawling(video.youtubeVideoId);
-  //   }
-  // }, []);
+    if (!autoCrawlingTimer) {
+      autoCrawling(video.youtubeVideoId);
+    }
+  }, []);
 
   function handleToggleClick() {
     setIsScriptShown((prev) => !prev);
