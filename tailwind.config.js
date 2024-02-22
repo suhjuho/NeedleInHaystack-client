@@ -20,6 +20,7 @@ export default {
           dark: colors.neutral[800],
           "dark-hover": colors.neutral[900],
         },
+        main: "#38D430",
       },
     },
   },
