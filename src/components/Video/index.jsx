@@ -123,6 +123,8 @@ function Video({
     setExtractedCode(response.data.extractedCode);
     setIsCapturing((prev) => !prev);
     setIsScriptShown(() => false);
+
+    await navigator.clipboard.writeText(response.data.extractedCode);
   }
 
   return (
@@ -204,8 +206,10 @@ function Video({
       </div>
       {isCapturing && (
         <div
-          className="absolute top-[134px] left-[8px] opacity-40 bg-slate-200"
+          className="absolute opacity-40 bg-slate-200"
           style={{
+            top: videoTop.current,
+            left: videoLeft.current,
             width: parseInt(playerDimensions.width, 10),
             height: parseInt(playerDimensions.height, 10),
           }}

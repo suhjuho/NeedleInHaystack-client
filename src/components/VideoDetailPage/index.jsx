@@ -35,10 +35,11 @@ function VideoDetailPage() {
 
   useEffect(() => {
     setLanguage("javascript");
+
     if (!isScriptShown)
       setTimeout(() => {
         editorRef.current.getAction("editor.action.formatDocument").run();
-      }, 100);
+      }, 0);
   }, [isCapturing]);
 
   useEffect(() => {
@@ -63,6 +64,10 @@ function VideoDetailPage() {
       autoCrawling(video.youtubeVideoId);
     }
   }, []);
+
+  function handleToggleClick() {
+    setIsScriptShown((prev) => !prev);
+  }
 
   function handleCaptureClick() {
     setIsCapturing((prev) => !prev);
@@ -91,21 +96,21 @@ function VideoDetailPage() {
 
     setTimeout(() => {
       editorRef.current.getAction("editor.action.formatDocument").run();
-    }, 100);
+    }, 0);
   }
 
   async function handleEditorChange(value) {
-    setExtractedCode(() => value);
+    setExtractedCode(value);
 
     await navigator.clipboard.writeText(value);
   }
 
   async function handleOptionChange(event) {
-    setLanguage(() => event.target.value);
+    setLanguage(event.target.value);
 
     setTimeout(() => {
       editorRef.current.getAction("editor.action.formatDocument").run();
-    }, 100);
+    }, 0);
   }
 
   useEffect(() => {
@@ -137,7 +142,7 @@ function VideoDetailPage() {
         />
         <button
           className="absolute hidden sm:block right-[10px] top-[100px] w-max h-max px-2 shrink-0 border rounded bg-green-300 hover:bg-green-400"
-          onClick={() => setIsScriptShown((prev) => !prev)}
+          onClick={handleToggleClick}
         >
           {isScriptShown ? "Script" : "Editor"}
         </button>
@@ -157,7 +162,7 @@ function VideoDetailPage() {
               height: `${parseInt(playerDimensions.height, 10) - 48}px `,
             }}
           >
-            <div className=" overflow-hidden flex items-center justify-between sticky z-9 p-2 top-0 bg-white font-bold text-2xl rounded-xl">
+            <div className="overflow-hidden flex items-center justify-between sticky z-9 p-2 top-0 bg-white font-bold text-2xl rounded-xl">
               <div className="shrink-0">Code Editor</div>
               <div className="ml-10 shrink-0 text-sm">Language : </div>
               <select
