@@ -12,6 +12,7 @@ function Video({
   currentVideoTime,
   setCurrentVideoTime,
   isCapturing,
+  isLoading,
   setIsCapturing,
   handleCaptureClick,
   setIsLoading,
@@ -82,6 +83,7 @@ function Video({
   async function handleMouseUp(event) {
     setIsLoading(true);
     setExtractedCode(() => null);
+    setIsScriptShown(() => false);
 
     captureEndX.current = event.clientX - videoLeft.current;
     captureEndY.current = event.clientY - videoTop.current;
@@ -122,7 +124,6 @@ function Video({
 
     setExtractedCode(response.data.extractedCode);
     setIsCapturing((prev) => !prev);
-    setIsScriptShown(() => false);
 
     await navigator.clipboard.writeText(response.data.extractedCode);
   }
@@ -132,11 +133,11 @@ function Video({
       <div
         id="player-container"
         ref={playerContainerRef}
-        className="relative w-full mr-4"
+        className="relative w-full max-w-screen-lg mr-4"
       >
         {isAvailable ? (
           <div className="absolute m-2">
-            <div className="m-0 p-0" ref={elementRef}>
+            <div ref={elementRef}>
               <ReactPlayer
                 className="overflow-hidden rounded-xl"
                 ref={playerRef}
@@ -153,16 +154,18 @@ function Video({
                 height={playerDimensions.height}
               />
             </div>
-            <div className="my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
+            <div className="relative my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
               <button
-                className="hidden sm:block px-4 py-1 rounded-lg bg-green-300 hover:bg-green-400"
+                className="absolute right-2 hidden lg:block px-4 py-1 rounded-lg bg-main hover:bg-green-300"
                 onClick={handleCaptureClick}
                 onMouseEnter={() => setIsHover(true)}
                 onMouseLeave={() => setIsHover(false)}
               >
                 {isHover ? "Try 'zx' Hotkey" : "Extract Code"}
               </button>
-              <div className="mb-3 font-bold text-xl">{video.title}</div>
+              <div className="mr-[140px] mb-3 font-bold text-xl">
+                {video.title}
+              </div>
               <div className="mb-3 font-bold">{video.channel}</div>
               {video.description.length <= 100 ? (
                 <div>{video.description}</div>
@@ -205,21 +208,36 @@ function Video({
         )}
       </div>
       {isCapturing && (
-        <div
-          className="absolute opacity-40 bg-slate-200"
-          style={{
-            top: videoTop.current,
-            left: videoLeft.current,
-            width: parseInt(playerDimensions.width, 10),
-            height: parseInt(playerDimensions.height, 10),
-          }}
-          role="none"
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-          {" "}
-          <DragSelection />
-        </div>
+        <>
+          <div
+            className="absolute opacity-40 bg-slate-200"
+            style={{
+              top: videoTop.current,
+              left: videoLeft.current,
+              width: parseInt(playerDimensions.width, 10),
+              height: parseInt(playerDimensions.height, 10),
+            }}
+            role="none"
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+          >
+            {" "}
+            <DragSelection />
+          </div>
+          {isLoading && (
+            <div
+              style={{
+                top: videoTop.current,
+                left: videoLeft.current,
+                width: parseInt(playerDimensions.width, 10),
+                height: parseInt(playerDimensions.height, 10),
+              }}
+              className="absolute"
+            >
+              <div className="absolute w-full h-1 rounded bg-gradient-to-r from-lime-300 from-10% via-green-400 via-70% to-emerald-300 to-90% brightness-100 animate-scan"></div>
+            </div>
+          )}
+        </>
       )}
     </>
   );

@@ -11,6 +11,8 @@ function VideoScript({
   transcript,
   transcripts,
   transcriptTimeLines,
+  isScriptShown,
+  handleToggleClick,
 }) {
   const [koreanScripts, setKoreanScripts] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -56,8 +58,8 @@ function VideoScript({
     if (showTranscript) {
       scriptRef.current[focusedIndex].scrollIntoView({
         behavior: "smooth",
-        block: "start",
-        inline: "start",
+        block: "center",
+        inline: "center",
       });
     }
   }, [currentVideoTime, showTranscript]);
@@ -80,38 +82,43 @@ function VideoScript({
 
   return (
     <div
-      className="hidden sm:block overflow-y-auto w-[35rem] m-2 border-2 border-grey-800 rounded-xl"
+      className="hidden lg:block overflow-y-auto w-[45rem] max-h-[820px] m-2 border-2 border-grey-800 rounded-xl"
       style={{ height: showTranscript ? playerDimensions.height : "" }}
     >
       <div className="flex items-center justify-between sticky p-2 top-0 bg-white font-bold text-2xl">
-        Transcript
-        <div className="relative">
-          <button
-            className="mr-4 text-sm"
-            onClick={handleTranscriptLanguageButton}
-          >
-            {transcriptLanguage}
-          </button>
-          {showLanguageDropdown && (
-            <div className="absolute w-20 mt-1 py-1 top-full right-0 bg-white border border-gray-300 ">
-              <button
-                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                onClick={() => handleLanguageSelect("EN")}
-              >
-                EN
-              </button>
-              <button
-                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                onClick={() => handleLanguageSelect("KR")}
-              >
-                KR
-              </button>
-            </div>
-          )}
-          <button onClick={handleShowTranscriptButton}>
-            {showTranscript ? "-" : "+"}
-          </button>
+        <div className="flex gap-x-2">
+          <p>Transcript</p>
+          <div className="relative">
+            <button
+              className="mr-4 text-sm"
+              onClick={handleTranscriptLanguageButton}
+            >
+              {transcriptLanguage}
+            </button>
+            {showLanguageDropdown && (
+              <div className="absolute w-20 mt-1 py-1 top-full right-0 bg-white border border-gray-300 ">
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  onClick={() => handleLanguageSelect("EN")}
+                >
+                  EN
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  onClick={() => handleLanguageSelect("KR")}
+                >
+                  KR
+                </button>
+              </div>
+            )}
+            <button onClick={handleShowTranscriptButton}>
+              {showTranscript ? "-" : "+"}
+            </button>
+          </div>
         </div>
+        <button className="ml-2 text-sm " onClick={handleToggleClick}>
+          See {isScriptShown ? "Editor" : "Script"}
+        </button>
       </div>
       {showTranscript && (
         <div className="overflow-y-auto overflow-x-hidden">
@@ -125,7 +132,7 @@ function VideoScript({
               return (
                 <button
                   key={youtubeVideoId + transcriptTimeLine + transcripts[index]}
-                  className={`flex w-full ${isInTime && "bg-red-100"} hover:bg-red-50`}
+                  className={`flex w-full ${isInTime && "bg-secondary"} hover:bg-secondary-hover`}
                   onClick={() => {
                     seekToTime(timeToSeconds(transcriptTimeLine));
                   }}
@@ -133,7 +140,7 @@ function VideoScript({
                     scriptRef.current[index] = element;
                   }}
                 >
-                  <p className="w-12 m-2 px-1 rounded bg-blue-200 text-sky-600 font-bold">
+                  <p className="m-2 px-1 rounded bg-blue-200 text-sky-600 font-bold">
                     {transcriptTimeLine}
                   </p>
                   <p className="m-2 text-left">

@@ -6,7 +6,7 @@ import axios from "axios";
 import Header from "../Header";
 import Video from "../Video";
 import VideoScript from "../VideoScript";
-import { Loading } from "../shared/Loading";
+import { Loading, CustomLoading } from "../shared/Loading";
 
 import {
   useAutoCrawlingTimerStore,
@@ -125,7 +125,7 @@ function VideoDetailPage() {
 
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoading && <CustomLoading text="Extracting Code..." />}
       <Header />
       <div className="flex">
         <Video
@@ -136,16 +136,11 @@ function VideoDetailPage() {
           isCapturing={isCapturing}
           setIsCapturing={setIsCapturing}
           handleCaptureClick={handleCaptureClick}
+          isLoading={isLoading}
           setIsLoading={setIsLoading}
           setExtractedCode={setExtractedCode}
           setIsScriptShown={setIsScriptShown}
         />
-        <button
-          className="absolute hidden sm:block right-[10px] top-[100px] w-max h-max px-2 shrink-0 border rounded bg-green-300 hover:bg-green-400"
-          onClick={handleToggleClick}
-        >
-          {isScriptShown ? "Script" : "Editor"}
-        </button>
         {isScriptShown ? (
           <VideoScript
             currentVideoTime={currentVideoTime}
@@ -154,32 +149,38 @@ function VideoDetailPage() {
             transcript={video.transcript}
             transcripts={video.transcripts}
             transcriptTimeLines={video.transcriptTimeLines}
+            isScriptShown={isScriptShown}
+            handleToggleClick={handleToggleClick}
           />
         ) : (
           <div
-            className="hidden sm:block w-[35rem] m-2 border-2 rounded-xl"
+            className="hidden lg:block w-[45rem] m-2 border-2 rounded-xl"
             style={{
               height: `${parseInt(playerDimensions.height, 10) - 48}px `,
             }}
           >
-            <div className="overflow-hidden flex items-center justify-between sticky z-9 p-2 top-0 bg-white font-bold text-2xl rounded-xl">
-              <div className="shrink-0">Code Editor</div>
-              <div className="ml-10 shrink-0 text-sm">Language : </div>
-              <select
-                className="w-max h-max mx-1 p-1 border border-black rounded focus:border-green-300 outline-none text-sm text-left"
-                aria-label="language"
-                onChange={handleOptionChange}
-              >
-                {CONSTANT.LANGUAGE_OPTIONS.map((language) => (
-                  <option
-                    key={language}
-                    value={language}
-                    defaultValue={language === "javascript"}
-                  >
-                    {language}
-                  </option>
-                ))}
-              </select>
+            <div className="overflow-hidden flex items-center justify-between sticky z-9 p-2 top-0 bg-white font-bold text-xl rounded-xl">
+              <div className="flex items-center gap-x-1">
+                <div className="shrink-0">Code Editor</div>
+                <select
+                  className="w-max h-max mx-1 p-1 border border-black rounded focus:border-green-300 outline-none text-sm text-left"
+                  aria-label="language"
+                  onChange={handleOptionChange}
+                >
+                  {CONSTANT.LANGUAGE_OPTIONS.map((language) => (
+                    <option
+                      key={language}
+                      value={language}
+                      defaultValue={language === "javascript"}
+                    >
+                      {language}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button className="text-sm" onClick={handleToggleClick}>
+                See Script
+              </button>
             </div>
             <Editor
               theme="vs-dark"

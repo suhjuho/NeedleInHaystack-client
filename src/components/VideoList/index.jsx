@@ -53,9 +53,10 @@ function VideoList({ innerRef, youtubeVideoId }) {
   function handleClickKeyword(event, keyword) {
     event.preventDefault();
 
-    setUserInput(keyword);
+    const query = keyword.replace(/\s+/g, " ").split(" ").join("+");
 
-    navigate(`/results?search_query=${keyword}`);
+    setUserInput(keyword);
+    navigate(`/results?search_query=${query}`);
   }
 
   return (
@@ -75,12 +76,10 @@ function VideoList({ innerRef, youtubeVideoId }) {
                   <ReactPlayer
                     url={CONSTANT.YOUTUBE_URL + youtubeVideoId}
                     className="overflow-hidden rounded-xl"
-                    width={400}
-                    height={225}
+                    width={340}
+                    height={180}
                     light={isHover}
-                    playIcon={
-                      <PlayIcon className="w-16 h-16 fill-white shadow-lg shadow-inner" />
-                    }
+                    playIcon={<PlayIcon className="w-16 h-16 fill-white" />}
                     playing
                     onError={() => {
                       setIsAvailable(false);
@@ -90,13 +89,13 @@ function VideoList({ innerRef, youtubeVideoId }) {
                 </div>
               ) : (
                 <img
-                  className="flex-none w-[400px] h-[225px] rounded-xl bg-gray-50"
+                  className="flex-none w-[340px] h-[180px] rounded-xl bg-gray-50"
                   src={video.thumbnailURL}
                   alt="thumbnail"
                 />
               )}
 
-              <div className="flex-auto min-w-0  w-[400px] sm:w-full my-1 pl-1 rounded-lg bg-gray-100 sm:bg-white">
+              <div className="flex-auto min-w-0 w-[340px] sm:w-full mb-2 pl-1 rounded-lg bg-gray-100 sm:bg-white">
                 <p className="pb-4 text-lg font-semibold leading-6 text-gray-900">
                   {video.title}
                 </p>
