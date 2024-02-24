@@ -7,6 +7,7 @@ import useFetchSingleVideo from "../../apis/useFetchSingleVideo";
 import CONSTANT from "../../constants/constant";
 
 import { useUserInputStore } from "../../store/store";
+import { LoadingSpin } from "../shared/Loading";
 
 function VideoList({ innerRef, youtubeVideoId }) {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ function VideoList({ innerRef, youtubeVideoId }) {
 
   return (
     <div ref={videoComponent}>
-      {!isFetching && (
+      {!isFetching ? (
         <Link to={`/watch?${video.youtubeVideoId}`} state={{ video }}>
           <div
             ref={innerRef}
@@ -133,6 +134,10 @@ function VideoList({ innerRef, youtubeVideoId }) {
             </div>
           </div>
         </Link>
+      ) : (
+        <div className="flex justify-center items-center w-[340px] h-[180px]">
+          <LoadingSpin />
+        </div>
       )}
     </div>
   );
