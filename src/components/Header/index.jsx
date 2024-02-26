@@ -106,7 +106,7 @@ function Header() {
   }
 
   return (
-    <div className="flex justify-center sm:justify-between items-center w-screen shrink sticky top-0 gap-4 lg:gap-8 my-8 px-4 py-2 z-50 bg-white ">
+    <div className="flex justify-center sm:justify-between items-center w-screen shrink sticky top-0 gap-4 lg:gap-8 pt-8 px-4 py-2 z-50 bg-white ">
       <div className="flex items-center">
         {headerState === "DetailPage" && (
           <button
@@ -122,7 +122,7 @@ function Header() {
         {headerState !== "MainPage" && (
           <>
             <Link to="/">
-              <div className="flex items-center justify-center text-center ">
+              <div className="hidden sm:flex items-center justify-center text-center ">
                 <img
                   className="w-6 mx-2"
                   src="/assets/LogoSample2.png"
