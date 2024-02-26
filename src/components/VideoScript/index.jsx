@@ -60,10 +60,7 @@ function VideoScript({
   }
 
   return (
-    <div
-      className="overflow-y-auto border-2 w-[45rem] sm:max-w-screen-xl border-grey-800 rounded-xl sm:ml-4 sm:max-h-[580px] h-[450px] sm:h-[850px]"
-      // style={{ height: playerDimensions.height }}
-    >
+    <div className="overflow-y-auto border-2 w-[45rem] sm:max-w-screen-xl border-grey-800 rounded-xl sm:ml-4 sm:max-h-[580px] h-[450px] sm:h-[850px]">
       <div className="flex items-center justify-between sticky p-2 top-0 bg-white font-bold text-2xl">
         <div className="flex gap-x-2">
           <p>Transcript</p>
