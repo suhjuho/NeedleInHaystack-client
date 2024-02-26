@@ -96,7 +96,7 @@ function VideoList({ innerRef, youtubeVideoId }) {
                 />
               )}
 
-              <div className="flex-auto min-w-0 w-[340px] mb-2 p-2 rounded-lg bg-gray-100 sm:bg-white ">
+              <div className="flex-auto min-w-0 w-[340px] mb-2 p-2 rounded-lg bg-gray-100 sm:bg-white">
                 <p className="pb-4 text-lg font-semibold leading-6 text-gray-900">
                   {video.title}
                 </p>
