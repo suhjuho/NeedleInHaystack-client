@@ -6,20 +6,14 @@ import axios from "axios";
 import Header from "../Header";
 import Video from "../Video";
 import VideoScript from "../VideoScript";
-import { Loading, CustomLoading } from "../shared/Loading";
+import { CustomLoading } from "../shared/Loading";
 
-import {
-  useAutoCrawlingTimerStore,
-  useHeaderStateStore,
-  usePlayerDimensions,
-} from "../../store/store";
+import { useHeaderStateStore, usePlayerDimensions } from "../../store/store";
 import CONSTANT from "../../constants/constant";
 
 function VideoDetailPage() {
   const { video } = useLocation().state;
   const { setHeaderState } = useHeaderStateStore();
-  const { autoCrawlingTimer, setAutoCrawlingTimer } =
-    useAutoCrawlingTimerStore();
   const { playerDimensions } = usePlayerDimensions();
 
   const [currentVideoTime, setCurrentVideoTime] = useState(0);
@@ -45,24 +39,18 @@ function VideoDetailPage() {
   useEffect(() => {
     setHeaderState("DetailPage");
 
-    async function autoCrawling(videoId) {
-      setAutoCrawlingTimer(true);
-
+    async function saveVideoId(videoId) {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/admin/autoCrawling`,
+        `${import.meta.env.VITE_BASE_URL}/admin/saveVideoId`,
         {
           videoId,
         },
       );
 
-      setAutoCrawlingTimer(false);
-
       return response.data;
     }
 
-    if (!autoCrawlingTimer) {
-      autoCrawling(video.youtubeVideoId);
-    }
+    saveVideoId(video.youtubeVideoId);
   }, []);
 
   function handleToggleClick() {
