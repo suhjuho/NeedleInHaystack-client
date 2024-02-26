@@ -70,14 +70,15 @@ function VideoList({ innerRef, youtubeVideoId }) {
             <div className="flex flex-col sm:flex-row min-w-0 gap-x-4">
               {isAvailable ? (
                 <div
+                  className="mb-2"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
                   <ReactPlayer
                     url={CONSTANT.YOUTUBE_URL + youtubeVideoId}
                     className="overflow-hidden rounded-xl"
-                    width={340}
-                    height={180}
+                    width={400}
+                    height={225}
                     light={isHover}
                     playIcon={<PlayIcon className="w-16 h-16 fill-white" />}
                     playing
@@ -95,7 +96,7 @@ function VideoList({ innerRef, youtubeVideoId }) {
                 />
               )}
 
-              <div className="flex-auto min-w-0 w-[340px] sm:w-full mb-2 pl-1 rounded-lg bg-gray-100 sm:bg-white">
+              <div className="flex-auto min-w-0 w-[400px] mb-2 p-2 rounded-lg bg-gray-100 sm:bg-white ">
                 <p className="pb-4 text-lg font-semibold leading-6 text-gray-900">
                   {video.title}
                 </p>
