@@ -71,6 +71,7 @@ function VideoList({ innerRef, youtubeVideoId }) {
             <div className="flex flex-col sm:flex-row min-w-0 gap-x-4">
               {isAvailable ? (
                 <div
+                  className="mb-2"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
@@ -96,7 +97,7 @@ function VideoList({ innerRef, youtubeVideoId }) {
                 />
               )}
 
-              <div className="flex-auto min-w-0 w-[340px] sm:w-full mb-2 pl-1 rounded-lg bg-gray-100 sm:bg-white">
+              <div className="flex-auto min-w-0 w-[340px] mb-2 p-2 rounded-lg bg-gray-100 sm:bg-white">
                 <p className="pb-4 text-lg font-semibold leading-6 text-gray-900">
                   {video.title}
                 </p>

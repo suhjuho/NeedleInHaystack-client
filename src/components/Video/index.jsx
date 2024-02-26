@@ -133,10 +133,10 @@ function Video({
       <div
         id="player-container"
         ref={playerContainerRef}
-        className="relative w-full max-w-screen-lg mr-4"
+        className="relative w-full max-w-screen-lg"
       >
         {isAvailable ? (
-          <div className="absolute m-2">
+          <div className="relative">
             <div ref={elementRef}>
               <ReactPlayer
                 className="overflow-hidden rounded-xl"
@@ -154,7 +154,7 @@ function Video({
                 height={playerDimensions.height}
               />
             </div>
-            <div className="relative my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
+            <div className="relative hidden sm:block my-4 p-2 border-gray-500 rounded-xl bg-gray-100">
               <button
                 className="absolute right-2 hidden lg:block px-4 py-1 rounded-lg bg-main hover:bg-green-300"
                 onClick={handleCaptureClick}
@@ -184,6 +184,20 @@ function Video({
                   )}
                 </button>
               )}
+            </div>
+            <div className="sm:hidden">
+              <button
+                className="font-bold text-xl my-3 w-full bg-gray-100 p-2 rounded-xl text-left"
+                onClick={handleMoreClick}
+              >
+                {video.title}
+                {showMore && (
+                  <div>
+                    <p className="my-3 text-sm">{video.channel}</p>
+                    <p className="text-sm">{video.description}</p>
+                  </div>
+                )}
+              </button>
             </div>
           </div>
         ) : (

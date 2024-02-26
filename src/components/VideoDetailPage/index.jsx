@@ -115,7 +115,7 @@ function VideoDetailPage() {
     <>
       {isLoading && <CustomLoading text="Extracting Code..." />}
       <Header />
-      <div className="flex">
+      <div className="flex flex-wrap m-2">
         <Video
           video={video}
           playerRef={playerRef}
