@@ -6,7 +6,7 @@ import axios from "axios";
 import Header from "../Header";
 import Video from "../Video";
 import VideoScript from "../VideoScript";
-import { Loading, CustomLoading } from "../shared/Loading";
+import { CustomLoading } from "../shared/Loading";
 
 import {
   useAutoCrawlingTimerStore,
@@ -127,7 +127,7 @@ function VideoDetailPage() {
     <>
       {isLoading && <CustomLoading text="Extracting Code..." />}
       <Header />
-      <div className="flex">
+      <div className="flex flex-wrap m-2">
         <Video
           video={video}
           playerRef={playerRef}
