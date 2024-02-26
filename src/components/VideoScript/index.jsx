@@ -15,7 +15,6 @@ function VideoScript({
   handleToggleClick,
 }) {
   const [koreanScripts, setKoreanScripts] = useState([]);
-  const [focusedIndex, setFocusedIndex] = useState(0);
   const [showTranscript, setShowTranscript] = useState(true);
   const [transcriptLanguage, setTranscriptLanguage] = useState("EN");
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
@@ -44,26 +43,6 @@ function VideoScript({
     translateAll(transcripts);
   }, []);
 
-  useEffect(() => {
-    transcriptTimeLines.forEach((transcriptTimeLine, index) => {
-      const isInTime =
-        timeToSeconds(transcriptTimeLine) <= currentVideoTime &&
-        timeToSeconds(transcriptTimeLines[index + 1]) > currentVideoTime;
-
-      if (isInTime) {
-        setFocusedIndex(index);
-      }
-    });
-
-    if (showTranscript) {
-      scriptRef.current[focusedIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
-    }
-  }, [currentVideoTime, showTranscript]);
-
   function handleShowTranscriptButton() {
     setShowTranscript((prev) => !prev);
     setShowLanguageDropdown(false);
@@ -82,8 +61,8 @@ function VideoScript({
 
   return (
     <div
-      className="hidden lg:block overflow-y-auto w-[45rem] max-h-[820px] m-2 border-2 border-grey-800 rounded-xl"
-      style={{ height: showTranscript ? playerDimensions.height : "" }}
+      className="overflow-y-auto border-2 w-[45rem] sm:max-w-screen-xl border-grey-800 rounded-xl sm:ml-4 sm:max-h-[580px] h-[450px] sm:h-[850px]"
+      // style={{ height: playerDimensions.height }}
     >
       <div className="flex items-center justify-between sticky p-2 top-0 bg-white font-bold text-2xl">
         <div className="flex gap-x-2">
@@ -96,7 +75,7 @@ function VideoScript({
               {transcriptLanguage}
             </button>
             {showLanguageDropdown && (
-              <div className="absolute w-20 mt-1 py-1 top-full right-0 bg-white border border-gray-300 ">
+              <div className="absolute w-20 mt-1 py-1 top-full right-0 bg-white border border-gray-300">
                 <button
                   className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                   onClick={() => handleLanguageSelect("EN")}
@@ -116,7 +95,10 @@ function VideoScript({
             </button>
           </div>
         </div>
-        <button className="ml-2 text-sm " onClick={handleToggleClick}>
+        <button
+          className="hidden sm:block ml-2 text-sm "
+          onClick={handleToggleClick}
+        >
           See {isScriptShown ? "Editor" : "Script"}
         </button>
       </div>
