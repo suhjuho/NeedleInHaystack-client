@@ -122,7 +122,7 @@ function Header() {
         {headerState !== "MainPage" && (
           <>
             <Link to="/">
-              <div className="hidden sm:flex items-center justify-center text-center ">
+              <div className="hidden sm:flex items-center justify-center text-center">
                 <img
                   className="w-6 mx-2"
                   src="/assets/LogoSample2.png"
@@ -156,7 +156,7 @@ function Header() {
       ) : (
         <div className="flex flex-col mr-4 ml-auto items-center cursor-pointer">
           <div
-            className="flex ml-auto items-center border rounded-full cursor-pointer"
+            className="flex ml-auto items-center border rounded-full cursor-pointer toggle-button"
             onClick={handleUserIconClick}
             role="button"
             tabIndex={0}
