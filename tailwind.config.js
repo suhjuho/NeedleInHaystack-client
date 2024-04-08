@@ -21,7 +21,7 @@ export default {
             animationTimingFunction: "cubic - bezier(0.8, 0, 1, 1)",
           },
           "100%": {
-            top: "100%",
+            top: "99%",
             animationTimingFunction: "cubic - bezier(0.8, 0, 1, 1)",
           },
         },
