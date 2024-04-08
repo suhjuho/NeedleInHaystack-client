@@ -110,7 +110,7 @@ function Header() {
       <div className="flex items-center">
         {headerState === "DetailPage" && (
           <button
-            className="flex rounded-full hover:bg-sky-50"
+            className="hidden sm:flex rounded-full hover:bg-sky-50"
             type="button"
             onClick={() => {
               navigate(-1);
