@@ -7,7 +7,8 @@
 </p>
 
 <div align="center">
-
+[Deployed](https://client.nih.world)
+/
 [Frontend repository](https://github.com/devsgk/NeedleInHaystack-client)
 /
 [Backend repository](https://github.com/devsgk/NeedleInHaystack-server)
