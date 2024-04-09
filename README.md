@@ -7,6 +7,7 @@
 </p>
 
 <div align="center">
+
 [Deployed](https://client.nih.world)
 /
 [Frontend repository](https://github.com/devsgk/NeedleInHaystack-client)
@@ -20,6 +21,7 @@
 - [🔧 Tech Stacks](#-tech-stacks)
 - [🙋🏻‍♂️ Introduction](#️-introduction)
 - [💪 Motivation](#-motivation)
+- [🕹️ Features](#-features)
 - [🧐 How does a "Search Engine" work?](#-how-does-a-search-engine-work)
 - [⛰️ Challenges](#️-challenges)
   1. [Search Algorithm](#1-search-algorithm)
@@ -70,6 +72,33 @@ To be updaed...
 
 ## 💪 Motivation
 개발 공부를 하면서 구글링은 거의 필수적으로 사용되는 도구였습니다. 특히나 요즘에는 영상 콘텐츠의 폭발적인 증가와 함께 YouTube에서 정보를 찾는 것이 새로운 검색 표준이 되어 가고 있음을 느끼게 되었습니다. 이러한 변화에 영감을 받아, 개발 관련 주제로 한정하여 YouTube와 같은 효율적인 영상 검색 경험을 제공하는 서비스를 개발하고 싶다는  생각을 하게되었습니다. 그리고 일상 속에서 너무나도 당연하게 여겨졌던 “검색”에 대해 조금 더 깊이 알아가고 싶은 욕구가 생겨 Needle in haystack 프로젝트를 시작하게 되었습니다.
+
+<br>
+
+## 🕹 Features
+1. 크롤러
+- 직접 만든 크롤러가 특정 시간마다 실제 유튜브 데이터를 크롤링 해옵니다.
+- 크롤링한 데이터는 역색인 작업을 거쳐 추후 검색에 용이한 형태로 가공됩니다.
+
+2. 검색 알고리즘
+- 사용자가 검색창에 입력한 검색어를 직접 구현한 다음 알고리즘들을 통해 최선의 검색 결과를 제공합니다.
+- TF(Term Frequency)
+- IDF(Inverse Document Frequency)
+- BM25
+- PageRank
+
+3. 검색 관련 사용자 편의 기능
+- 현대 검색엔진들이 제공하는 자동완성 기능(검색어 추천 기능)과 오타 교정 기능을 제공합니다.
+- 자동완성(검색어 추천) 기능
+- 오타교정 기능
+- (로그인 시) 이전 검색 기록 제공
+4. 영상 시청 기능
+- 검색의 결과물인 영상물에 대하여 시청 할 수 있는 기능을 제공합니다.
+- 한영 자막 기능
+
+5. 영상 코드 추출 기능
+- 시청중인 영상의 코드를 캡쳐하면 해당 코드를 추출하여 직접 코드를 편집할 수 있는 코드에디터와 함께 보여주는 기능을 제공합니다
+- 편리한 사용을 위해 단축키로 (z + x) 코드추출 기능을 사용할 수 있습니다.
 
 <br>
 
