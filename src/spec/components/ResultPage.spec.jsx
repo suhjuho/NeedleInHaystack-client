@@ -31,5 +31,6 @@ describe("render Loading components", () => {
 
     expect(screen.getByText("Needle In Haystack")).toBeInTheDocument();
     expect(screen.getByText("Sign in")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 });

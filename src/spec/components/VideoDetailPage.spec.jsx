@@ -45,7 +45,7 @@ vi.mock("react-router-dom", async () => {
 
 describe("Video detail page", () => {
   beforeEach(() => {
-    const { container } = render(
+    render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
           <VideoDetailPage />
